@@ -1,6 +1,6 @@
 <div align="center">
   
-<img src="https://i.imgur.com/cMNGWr9.png" width="128" height="128" />
+<img src="https://i.imgur.com/ga4CbjS.png" width="128" height="128" />
 <br />
 
 # HELIUM CLIENTᵇᵉᵗᵃ
