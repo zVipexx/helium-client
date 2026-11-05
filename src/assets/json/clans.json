@@ -1,0 +1,13 @@
+[
+  {
+    "clan": "yawn",
+    "gradient": {
+      "rot": "90deg",
+      "stops": [
+        "#b5c6e0 0%",
+        "#ebf4f5 80%",
+        "#b5c6e0 100%"
+      ]
+    }
+  }
+]

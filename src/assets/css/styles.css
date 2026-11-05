@@ -1,0 +1,172 @@
+.hl,
+.script-menu-wrap {
+  height: 100%;
+  width: 100%;
+}
+
+.nickname {
+  white-space: nowrap;
+}
+
+.kill-death {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 0.2rem !important;
+}
+
+.hsp {
+  flex-direction: row !important;
+}
+
+.kill-bar-item {
+  box-shadow: black 0 0 10px 0 !important;
+}
+
+.kill-bar-item.red {
+  background: var(--red-kill) !important;
+}
+
+.kill-bar-item.blue {
+  background: var(--blue-kill) !important;
+}
+
+.enemy-point {
+  position: absolute;
+  top: 8rem;
+  background: rgba(255, 0, 0, .3);
+  padding: .4em .5em;
+  border-radius: 8px;
+  font-weight: bold;
+  opacity: 1;
+  transition: .5s;
+  font-size: 18px;
+}
+
+.enemy-point.fade-out {
+  opacity: 0;
+}
+
+.interface {
+  transition: .2s;
+}
+
+.interface.dragover {
+  filter: brightness(0.5);
+}
+
+.helium-gradient {
+  -webkit-background-clip: text !important;
+  color: transparent !important;
+}
+
+.nickname.helium-gradient {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.nickname:not(.helium-gradient) .helium-badges {
+  margin-left: 0.25rem;
+}
+
+.helium-badges {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.team-tag {
+  flex: 0;
+}
+
+.profile .wrp,
+.profile .hsp {
+  opacity: 0.7;
+  font-size: 0.7em;
+}
+
+.ktiers-rank-icon {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  width: 144px;
+  height: 144px;
+  filter: drop-shadow(0 0 6px var(--rank-glow-color));
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.spectate-eye {
+  display: flex;
+  align-items: center;
+  transform: translateX(-0.5rem);
+  color: #919191;
+  transition: 0.2s;
+}
+
+.spectate-eye:hover {
+  color: #d3d3d3;
+}
+
+.settings .value.clickable {
+  background: rgba(0, 0, 0, .3);
+  padding: 0 4px;
+  border-radius: 6px;
+  cursor: text;
+  height: 38px;
+  field-sizing: content;
+  width: auto;
+  text-align: right;
+  margin-right: 0.5rem;
+  outline: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+}
+
+.settings .value.clickable::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin-left: 8px;
+  opacity: 0.3;
+  background: transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='16' fill='white'><path d='M5 0L10 6H0zM5 16L0 10h10z'/></svg>") center / 10px 16px no-repeat;
+  width: 14px;
+  transition: 0.2s;
+}
+
+.settings .value.clickable::-webkit-inner-spin-button:hover {
+  opacity: 0.6;
+}
+
+.settings .box:last-child .element {
+  margin-top: 0.5rem;
+}
+
+#ktiers-btn {
+  background: radial-gradient(circle at 50%, #FF9F4D 0%, #FF7A1A 45%, #E9620A 100%) !important;
+  border-top-color: #FFB373 !important;
+  border-bottom-color: #D15606 !important;
+  border-right-color: #A64304 !important;
+  border-radius: 0 0 2px 5px !important;
+}
+
+#ktiers-btn img {
+  filter: drop-shadow(0 0 2px rgba(255, 240, 210, 0.9));
+}
+
+#helium-discord-btn {
+  background: radial-gradient(circle at 78%, #A3EAFF 0%, #43A3FF 30%, #2170E6 100%) !important;
+  border-top-color: #93D2FF !important;
+  border-bottom-color: #1B60C9 !important;
+  border-right-color: #133F8C !important;
+  border-radius: 0 0 2px 5px !important;
+}
+
+#helium-discord-btn svg {
+  filter: drop-shadow(0 0 2px rgba(129, 186, 252, 0.9));
+}
+
+#helium-keybind-reminder {
+  position: absolute;
+  left: 147px;
+  bottom: 10px;
+  width: max-content;
+}

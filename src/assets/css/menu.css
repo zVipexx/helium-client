@@ -1,0 +1,1050 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.fab,
+.fas,
+.helium-menu[data-visible="true"] i {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+}
+
+@keyframes notice {
+  from {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  to {
+    background: rgba(255, 65, 0, .4);
+    box-shadow: 0 0 30px rgba(255, 65, 0, .7);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tab-out {
+  to {
+    opacity: 0;
+    transform: translateX(-300px);
+  }
+}
+
+@keyframes tab-in {
+  from {
+    opacity: 0;
+    transform: translateX(300px);
+  }
+}
+
+@keyframes helium-modal-in {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@property --confirm-p {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.helium-menu {
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  contain: paint;
+}
+
+.helium-menu[data-active="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.helium-menu[data-active="true"] .menu {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.helium-menu[data-active="true"] .restart-now {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+.helium-menu[data-theme="glass"] {
+  --black: 0, 0, 0;
+  --text: 213, 219, 255;
+  --text-inactive: 157, 164, 196;
+  --dark: 39, 39, 39;
+  --border: 52, 60, 70;
+  --danger: 255, 86, 120;
+  --surface: 120, 120, 120, 0.2;
+
+  --border-radius: 16px;
+}
+
+.helium-menu .restart-now {
+  position: absolute;
+  display: none;
+  gap: 1rem;
+  padding: 1rem;
+  left: 50%;
+  top: 8%;
+  align-items: center;
+  background: rgba(var(--accent), 0.5);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 2px solid rgba(var(--text), .3);
+  border-radius: 20px;
+  transform: translate(-50%, 50%) scale(0.9);
+  opacity: 0;
+  transform-origin: bottom;
+}
+
+.helium-menu[data-visible="true"] .wrapper.button {
+  padding: 0.5rem;
+  background: rgba(var(--surface));
+  border: 1px solid rgba(var(--text), .3);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.helium-menu[data-visible="true"] .wrapper.button.filled {
+  background: rgb(var(--accent));
+}
+
+.helium-menu[data-visible="true"] .restart-now #restart {
+  background: rgba(var(--accent), .6);
+}
+
+.menu {
+  width: 1490px;
+  height: 750px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  display: grid;
+  transform: translate(-50%, -50%) scale(0.95);
+  opacity: 0;
+  z-index: 999;
+  grid-template-columns: 0.9fr 4fr;
+  border: 2px solid rgb(var(--border));
+  border-radius: 24px;
+  overflow: hidden;
+  color: rgb(var(--text));
+  font-weight: 400;
+
+  font-family: 'Poppins', sans-serif;
+}
+
+.helium-menu[data-visible="true"] select {
+  cursor: pointer;
+  appearance: base;
+}
+
+.helium-menu[data-visible="true"] option {
+  background: rgb(22, 24, 28);
+}
+
+.helium-menu[data-visible="true"] .keybind,
+.helium-menu[data-visible="true"] select,
+.helium-menu[data-visible="true"] input[type="number"],
+.helium-menu[data-visible="true"] input[type="text"] {
+  background: rgba(var(--surface));
+  border: 2px solid rgb(var(--border));
+  height: 32px;
+  outline: none;
+  caret-color: rgb(var(--text));
+  color: rgb(var(--text));
+  padding: 0 0.5rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.helium-menu[data-visible="true"] input[type="number"] {
+  width: 80px;
+}
+
+.helium-menu[data-visible="true"] input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  opacity: 0.3;
+  background: transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='16' fill='white'><path d='M5 0L10 6H0zM5 16L0 10h10z'/></svg>") center / 10px 16px no-repeat;
+  width: 14px;
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] input[type="number"]::-webkit-inner-spin-button:hover {
+  opacity: 0.6;
+}
+
+.helium-menu[data-visible="true"] input[type="color"] {
+  background: none;
+  border: none;
+  outline: none;
+  width: 44px;
+  height: 42px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.helium-menu[data-visible="true"] input[type="color"]::-webkit-color-swatch {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgb(var(--border));
+  transform: translateY(-1px);
+}
+
+.helium-menu[data-visible="true"] .keybind {
+  cursor: pointer;
+  color: rgb(var(--text-inactive));
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.helium-menu[data-visible="true"] .keybind:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .keybind.active {
+  border: 2px dotted rgb(var(--text-inactive));
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .clear-keybind {
+  margin-right: 1rem;
+}
+
+.helium-menu[data-visible="true"] .sidebar {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid rgb(var(--border));
+}
+
+.helium-menu[data-visible="true"] .sidebar::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% -10%, rgba(var(--accent), .15) 0%, transparent 70%);
+}
+
+.helium-menu[data-visible="true"] .header {
+  color: rgb(var(--accent));
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 2rem;
+  padding: 1.25rem;
+}
+
+.helium-menu[data-visible="true"] #state {
+  position: absolute;
+  color: red;
+  text-transform: none;
+  font-weight: 800;
+  font-size: 0.4em;
+}
+
+.helium-menu[data-visible="true"] .tabs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  padding: 0 20px;
+}
+
+.helium-menu[data-visible="true"] .tab-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.helium-menu[data-visible="true"] .tab {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 12px;
+  transition: box-shadow 0.2s, color 0.2s, background 0.2s;
+  display: grid;
+  box-shadow: inset 0 0 0 2px rgba(var(--border), 0);
+  align-items: center;
+  grid-template-columns: 1fr 3.5fr;
+  cursor: pointer;
+  color: rgb(var(--text-inactive));
+}
+
+.helium-menu[data-visible="true"] .tab svg {
+  margin-left: 0.5rem;
+}
+
+.helium-menu[data-visible="true"] .tab path {
+  color: rgb(var(--text-inactive));
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] .tab.active {
+  box-shadow: inset 0 0 0 2px rgba(var(--border), .6);
+  background: rgba(var(--accent), .6);
+  color: rgb(var(--text));
+  transition: none;
+  pointer-events: none;
+}
+
+.helium-menu[data-visible="true"] .tab:hover {
+  box-shadow: inset 0 0 0 2px rgba(var(--border), .6);
+}
+
+.helium-menu[data-visible="true"] .tab.active path {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .tab-title {
+  font-size: 0.8em;
+}
+
+.helium-menu[data-visible="true"] .footer {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  border-top: 2px solid rgb(var(--border));
+  padding: 1rem;
+}
+
+.helium-menu[data-visible="true"] .avatar {
+  width: 32px;
+  height: 32px;
+  background-size: 259.43px;
+  background-position: -32.57px -32.57px;
+  image-rendering: pixelated;
+  border-radius: 8px;
+}
+
+.helium-menu[data-visible="true"] .footer .info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.helium-menu[data-visible="true"] .version {
+  color: gray;
+  font-size: 12px;
+}
+
+.helium-menu[data-visible="true"] .update {
+  margin-left: auto;
+  opacity: 0.5;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.helium-menu[data-visible="true"] .update.available {
+  animation: 1.3s notice infinite ease alternate-reverse;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.helium-menu[data-visible="true"] .update.available path {
+  color: rgb(152, 255, 0);
+}
+
+.helium-menu[data-visible="true"] .main {
+  position: relative;
+  overflow: hidden;
+}
+
+.helium-menu[data-visible="true"] .main:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 60% 120%, rgba(var(--accent), .15) 0%, transparent 100%);
+}
+
+.helium-menu[data-visible="true"] .no-results {
+  color: gray;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 64px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.helium-menu[data-visible="true"] .search-hidden {
+  display: none !important;
+}
+
+.menu-tooltip {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  padding: 4px 8px;
+  background: rgba(20, 22, 28, .95);
+  color: #fff;
+  font-size: 13px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+.helium-menu[data-visible="true"] .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  position: relative;
+  z-index: 10;
+  background: transparent;
+}
+
+.helium-menu[data-visible="true"] .search {
+  color: gray !important;
+  padding: 0.5rem 0.5rem 0.5rem 1.8rem !important;
+}
+
+.helium-menu[data-visible="true"] .search-glass {
+  transform: translateX(50px);
+  pointer-events: none;
+}
+
+.helium-menu[data-visible="true"] .search-glass path {
+  color: gray;
+}
+
+.helium-menu[data-visible="true"] .wrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  position: relative;
+}
+
+.helium-menu[data-visible="true"] .wrapper.column {
+  flex-direction: column !important;
+}
+
+.helium-menu[data-visible="true"] .wrapper.row {
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+.helium-menu[data-visible="true"] .wrapper.spaced {
+  justify-content: space-between;
+}
+
+.helium-menu[data-visible="true"] .wrapper.range {
+  padding: 0;
+  gap: 1rem;
+}
+
+.helium-menu[data-visible="true"] .wrapper.color input {
+  text-transform: uppercase;
+}
+
+
+.helium-menu[data-visible="true"] .wrapper.color input[type="color"] {
+  transform: translateY(-1px)
+}
+
+.helium-menu[data-visible="true"] .wrapper.valid::before,
+.helium-menu[data-visible="true"] .wrapper.invalid::before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -1.5rem;
+  font-weight: bold;
+}
+
+.helium-menu[data-visible="true"] .wrapper.valid::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234caf50' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.helium-menu[data-visible="true"] .wrapper.invalid::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f44336' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.helium-menu[data-visible="true"] .wrapper.button:not(.confirm) {
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] .wrapper.button:not(.confirm):hover:active {
+  opacity: 0.7;
+  transform: translateY(2px);
+}
+
+.helium-menu[data-visible="true"] .title {
+  font-size: 24px;
+}
+
+.helium-menu[data-visible="true"] #back {
+  margin-left: 1rem;
+}
+
+.helium-menu[data-visible="true"] #close {
+  margin-right: 0.4rem;
+}
+
+.helium-menu[data-visible="true"] .navigate,
+.helium-menu[data-visible="true"] #close,
+.helium-menu[data-visible="true"] #close-modal,
+.helium-menu[data-visible="true"] .clear-keybind {
+  transition: background 0.2s, transform 0.2s, opacity 0.2s, color 0.2s;
+  border-radius: 4px;
+  color: rgb(var(--text-inactive));
+}
+
+.helium-menu[data-visible="true"] .navigate:hover,
+.helium-menu[data-visible="true"] #close:hover,
+.helium-menu[data-visible="true"] #close-modal:hover,
+.helium-menu[data-visible="true"] .clear-keybind:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .options {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 64px);
+  overflow-y: auto;
+  flex-direction: column;
+  border: 1.5rem solid transparent;
+  padding: 2px 1rem 0 1rem;
+  gap: 3rem;
+}
+
+.helium-menu[data-visible="true"] .options::-webkit-scrollbar {
+  background: none;
+}
+
+.helium-menu[data-visible="true"] .options::-webkit-scrollbar-thumb {
+  border-radius: 16px;
+  background: rgba(var(--text-inactive), 0.3);
+  right: 0.8rem;
+}
+
+.helium-menu[data-visible="true"] .options::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--text), 0.3);
+}
+
+.helium-menu[data-visible="true"] .options.active,
+.helium-menu[data-visible="true"] .options.fade-in,
+.helium-menu[data-visible="true"] .options.fade-out {
+  display: flex;
+}
+
+.helium-menu[data-visible="true"] .options.fade-out::-webkit-scrollbar {
+  display: none;
+}
+
+.helium-menu[data-visible="true"] .option-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.8rem;
+}
+
+.helium-menu[data-visible="true"] .option-group .title {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgb(var(--text-inactive));
+  transition: color 0.2s;
+}
+
+.helium-menu[data-visible="true"] .option-group .title:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .top {
+  align-items: center;
+  width: 100%;
+}
+
+.helium-menu[data-visible="true"] .top svg {
+  color: gray;
+}
+
+.helium-menu[data-visible="true"] .option .top svg {
+  zoom: 0.78;
+}
+
+.helium-menu[data-visible="true"] textarea {
+  height: 180px;
+  width: 100%;
+  background: rgba(var(--surface));
+  outline: none;
+  color: rgb(var(--text));
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: 2px solid rgb(var(--border));
+  resize: none;
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+.helium-menu[data-visible="true"] .option.dropdown {
+  flex-direction: column;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: 12px 1rem !important;
+  min-height: 64px;
+  max-height: 320px;
+  height: unset !important;
+  gap: 0.5rem;
+}
+
+.helium-menu[data-visible="true"] .dropdown svg {
+  transform: rotate(-90deg);
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] .dropdown.active svg {
+  transform: rotate(0deg);
+}
+
+.helium-menu[data-visible="true"] .theme,
+.helium-menu[data-visible="true"] .option {
+  background: rgba(var(--surface));
+  position: relative;
+  width: 100%;
+  height: 64px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.helium-menu[data-visible="true"] .option {
+  padding: 0 1rem;
+}
+
+.helium-menu[data-visible="true"] .option.dragover {
+  opacity: 0.6;
+}
+
+.theme:after,
+.helium-menu[data-visible="true"] .option:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: -2px;
+  padding: 2px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgb(68, 77, 87), transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+.helium-menu[data-visible="true"] .option.button {
+  background: none;
+  border: 2px dotted rgb(var(--border))
+}
+
+.helium-menu[data-visible="true"] .option.button:after {
+  content: none;
+}
+
+.helium-menu[data-visible="true"] .force-disabled,
+.helium-menu[data-visible="true"] .disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.helium-menu[data-visible="true"] .option .wrapper {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.helium-menu[data-visible="true"] .option .hover {
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] .option:hover .hover {
+  opacity: 1;
+}
+
+.helium-menu[data-visible="true"] .description {
+  color: gray;
+  font-size: 0.8em;
+}
+
+.helium-menu[data-visible="true"] .checkbox {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+.helium-menu[data-visible="true"] .checkbox input {
+  display: none;
+}
+
+.helium-menu[data-visible="true"] .checkbox label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(var(--border));
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.helium-menu[data-visible="true"] .checkbox input:checked+label {
+  background: rgba(var(--accent));
+}
+
+.helium-menu[data-visible="true"] .checkbox label:after {
+  content: "";
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  background: white;
+  border-radius: 50%;
+  transition: left 0.3s;
+}
+
+.helium-menu[data-visible="true"] .checkbox input:checked+label:after {
+  left: 1.75rem;
+}
+
+.helium-menu[data-visible="true"] .checkbox label:before {
+  content: "Off";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -2rem;
+  color: gray;
+  font-size: 0.8em;
+}
+
+.helium-menu[data-visible="true"] .checkbox input:checked+label:before {
+  content: "On";
+}
+
+.menu input[type="range"] {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.menu input[type="range"]::-webkit-slider-runnable-track {
+  background: rgba(var(--border));
+  height: 6px;
+  border-radius: 3px;
+}
+
+.menu input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  background: rgba(var(--accent));
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-top: -5px;
+}
+
+.helium-menu[data-visible="true"] .theme {
+  width: 100%;
+  height: 128px;
+  position: relative;
+  justify-content: center;
+  font-size: 1.7em;
+  font-weight: 700;
+  color: rgb(var(--text-inactive));
+  transition: border 0.2s, color 0.2s;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 rgb(var(--accent));
+}
+
+.helium-menu[data-visible="true"] .theme:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .theme.active {
+  box-shadow: inset 0 0 0 4px rgb(var(--accent));
+  color: rgb(var(--text));
+  transform: translateY(-2px);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.helium-menu[data-visible="true"] .theme.active:after {
+  display: none;
+}
+
+.helium-menu[data-visible="true"] .confirm {
+  position: relative;
+  transition: 0.2s;
+}
+
+.helium-menu[data-visible="true"] .confirm::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  padding: 2px;
+  border-radius: 6px;
+  background: conic-gradient(rgba(255, 255, 255, .7) var(--confirm-p), transparent 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: --confirm-p 0.2s ease-out, opacity 0.15s;
+}
+
+.helium-menu[data-visible="true"] .confirm.holding::after {
+  --confirm-p: 360deg;
+  opacity: 1;
+  transition: --confirm-p 1s linear, opacity 0.1s;
+}
+
+.helium-menu[data-visible="true"] .confirm.confirmed::after {
+  --confirm-p: 360deg;
+  background: conic-gradient(rgba(130, 255, 0, .7) var(--confirm-p), transparent 0);
+  opacity: 1;
+}
+
+.helium-menu[data-visible="true"] .confirm.confirmed {
+  opacity: 0.7;
+  transform: translateY(2px);
+}
+
+.alert-default {
+  display: flex;
+  align-items: center;
+  padding: .9rem 1.1rem;
+  margin-bottom: .5rem;
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, .25);
+  border-radius: .2rem;
+  background: linear-gradient(262.54deg, #202639 9.46%, #223163 100.16%);
+  margin-left: 1rem;
+  border: solid .15rem #ffb914;
+  font-family: Exo\ 2;
+}
+
+.vue-notification-wrapper {
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  transition-property: all;
+}
+
+.helium-modal-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(2px);
+  opacity: 1;
+}
+
+.helium-modal {
+  position: absolute;
+  display: flex;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgb(39, 41, 46);
+  color: white;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 12px;
+  border: 2px solid rgb(var(--border));
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.helium-menu[data-active="true"] .helium-modal {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.helium-menu[data-visible="true"] #btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.helium-menu[data-visible="true"] .helium-modal .button#close-modal {
+  background: transparent;
+}
+
+.helium-menu[data-visible="true"] #update-modal {
+  padding: 0;
+  gap: 0;
+  width: 640px;
+}
+
+.helium-menu[data-visible="true"] .helium-modal .header {
+  padding: 0;
+}
+
+.helium-menu[data-visible="true"] .helium-modal>.wrapper {
+  padding: 1rem;
+}
+
+.helium-menu[data-visible="true"] .helium-modal .content {
+  border-top: 2px solid rgb(var(--border));
+  padding: 0 !important;
+  gap: 0 !important;
+  justify-content: flex-start !important;
+  background: rgb(22, 24, 28);
+}
+
+.helium-menu[data-visible="true"] #update-modal .footer span {
+  color: rgb(178, 120, 62);
+  font-size: 0.9em;
+}
+
+.helium-menu[data-visible="true"] #update-modal .changelog {
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] #update-modal .changelog .wrapper {
+  margin-bottom: 0.5rem;
+  font-size: 1.2em;
+}
+
+.helium-menu[data-visible="true"] #update-modal #date {
+  color: gray;
+}
+
+.helium-menu[data-visible="true"] #update-modal .change:before {
+  content: "•";
+  margin-right: 4px
+}
+
+.helium-menu[data-visible="true"] #update-installing-modal {
+  width: 530px;
+}
+
+.helium-menu[data-visible="true"] #update-installing-modal #info {
+  color: rgb(var(--text));
+  text-align: center;
+  white-space: pre-line;
+}
+
+.helium-menu[data-visible="true"] #update-installing-modal .progress {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, rgb(var(--accent)) 0%, transparent 0%);
+  border-radius: 16px;
+  position: relative;
+}
+
+.helium-menu[data-visible="true"] #update-installing-modal .progress:after {
+  position: absolute;
+  content: "";
+  width: calc(100% + 4px);
+  height: 12px;
+  border-radius: 16px;
+  top: -2px;
+  left: -2px;
+  z-index: -1;
+  background: rgba(255, 255, 255, .4);
+}
+
+.helium-menu[data-visible="true"] #add-css {
+  justify-content: center;
+  color: rgb(var(--text-inactive));
+  transition: 0.2s;
+  cursor: pointer;
+  flex-direction: column;
+}
+
+.helium-menu[data-visible="true"] #add-css:hover {
+  color: rgb(var(--text));
+}
+
+.open-css {
+  color: rgb(var(--text-inactive));
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.helium-menu[data-visible="true"] .open-css:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] .delete-css {
+  border: none;
+  background: none;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: rgb(var(--text-inactive));
+  transition: 0.2s;
+  border: none !important;
+  background: none !important;
+  padding: 0.2rem !important;
+}
+
+.helium-menu[data-visible="true"] .delete-css:hover {
+  color: rgb(var(--danger))
+}
