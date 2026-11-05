@@ -83,6 +83,8 @@ autoUpdater.on("download-progress", (progress) => gameWindow.webContents.send("d
 autoUpdater.on("error", (error) => gameWindow.webContents.send("download-error", error))
 autoUpdater.on("update-downloaded", () => autoUpdater.quitAndInstall());
 
+// folders
+
 const scriptsPath = path.join(app.getPath("documents"), "HeliumClient", "scripts");
 if (!fs.existsSync(scriptsPath)) {
   fs.mkdirSync(scriptsPath, { recursive: true });
@@ -100,12 +102,16 @@ if (!fs.existsSync(soundsPath)) {
 const swapperPath = path.join(app.getPath("documents"), "HeliumClient", "swapper");
 if (!fs.existsSync(swapperPath)) {
   fs.mkdirSync(swapperPath, { recursive: true });
+  fs.mkdirSync(path.join(swapperPath, "assets", "media"), { recursive: true });
+  fs.mkdirSync(path.join(swapperPath, "assets", "img"), { recursive: true });
 }
 
 const cssPath = path.join(app.getPath("documents"), "HeliumClient", "css");
 if (!fs.existsSync(cssPath)) {
   fs.mkdirSync(cssPath, { recursive: true });
 }
+
+// handlers
 
 ipcMain.on("get-settings", (e) => {
   e.returnValue = settings;
