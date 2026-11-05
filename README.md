@@ -11,7 +11,7 @@
 </div>
 
 ## Why is Helium Client getting marked as a virus?
-Antiviruses will flag this Client since the Installer is not signed. Since this is a small community project, buying a license is not feasible. You can safely bypass this warning by clicking "More info" and "Run anyway," or by adding an exclusion in Windows Defender.
+Antiviruses will flag this Client since the Installer is not signed. Since this is a small community project, buying a license is not viable. You can safely bypass this warning by clicking "More info" and "Run anyway," or by adding an exclusion in Windows Defender.
 
 ## Features
 - [x] Uncapped FPS
