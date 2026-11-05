@@ -89,8 +89,12 @@ if (!fs.existsSync(scriptsPath)) {
 }
 
 const soundsPath = path.join(app.getPath("documents"), "HeliumClient", "menusounds");
+const defaultSoundsPath = path.join(__dirname, "./assets/mp3");
 if (!fs.existsSync(soundsPath)) {
   fs.mkdirSync(soundsPath, { recursive: true });
+  fs.readdirSync(defaultSoundsPath).forEach((file) => {
+    fs.copyFileSync(path.join(defaultSoundsPath, file), path.join(soundsPath, file));
+  })
 }
 
 const swapperPath = path.join(app.getPath("documents"), "HeliumClient", "swapper");
@@ -149,15 +153,22 @@ ipcMain.on("get-size", (e) => {
 const soundCache = {};
 ipcMain.on("get-sound", (e, sound) => {
   if (!soundCache[sound]) {
-    const p = path.join(soundsPath, `${sound}.ogg`);
+    let p = path.join(soundsPath, `${sound}.ogg`);
+    let mime = "audio/ogg";
+    if (!fs.existsSync(p)) {
+      p = path.join(soundsPath, `${sound}.mp3`);
+      mime = "audio/mpeg";
+    }
     try {
-      soundCache[sound] = "data:audio/mpeg;base64," + fs.readFileSync(p).toString("base64");
+      soundCache[sound] = `data:${mime};base64,` + fs.readFileSync(p).toString("base64");
     } catch (err) {
       console.error("get-sound failed:", p, err);
     }
   }
   e.returnValue = soundCache[sound] ?? null;
 });
+
+// resource swapper
 
 const resolveSwap = (pathname) => {
   let relative;
@@ -194,6 +205,7 @@ const initSwapper = () => {
   );
 }
 
+// game init
 const initGame = () => {
   protocol.registerFileProtocol("file", (request, callback) => {
     callback(decodeURIComponent(request.url.replace("file:///", "")));
