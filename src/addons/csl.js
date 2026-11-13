@@ -264,7 +264,6 @@ const initCSL = (settings) => {
     }
   }
 
-  window.listSceneObjects = () => [...state.sceneObjects.values()].sort((a, b) => a.id - b.id);
   return { sceneObjects: state.sceneObjects, updateTexture };
 };
 

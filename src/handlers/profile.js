@@ -155,7 +155,7 @@ const handleProfile = () => {
   applyProfileChanges();
 
   document.querySelector(".tab-header").addEventListener("click", (e) => {
-    if (!e.target.classList.contains("tab") || e.target.textContent.includes("trophies") || e.target.textContent.includes("skins")) return;
+    if (!e.target.classList.contains("tab") || /trophies|skins|maps|modes/.test(e.target.textContent)) return;
     waitForElement(".card.statistics", () => applyProfileChanges());
   })
 }

@@ -10,7 +10,9 @@ win:
   icon: "src/assets/img/icon.png"
   artifactName: "${name}-setup-win-${version}.${ext}"
 mac:
-  target: dmg
+  target:
+    - dmg
+    - zip
   icon: "src/assets/img/icon.icns"
   artifactName: "${name}-setup-mac-${version}.${ext}"
 linux:

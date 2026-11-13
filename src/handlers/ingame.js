@@ -13,9 +13,9 @@ const handleIngame = () => {
     }
   }, true);
 
-  // assists counter
+  document.querySelector(".svg-icon--__skull__")?.closest(".ui-cell").parentElement.classList.add("kill-death");
 
-  document.querySelector(".svg-icon--__skull__").closest(".ui-cell").parentElement.classList.add("kill-death");
+  // assists counter
 
   let assistsCount = 0;
   const createAssists = () => {
@@ -76,6 +76,7 @@ const handleIngame = () => {
 
   const toggleEnemyPointIndicator = () => {
     let eop = document.querySelector(".enemy-point");
+    console.log("point")
 
     eop = document.createElement("div");
     eop.classList.add("enemy-point");
@@ -150,7 +151,7 @@ const handleIngame = () => {
     }).observe(killBarCont, { childList: true })
   }
 
-  const teamScores = document.querySelectorAll(".script-ui .ui-row:nth-child(3) .ui-cell");
+  const teamScores = document.querySelectorAll(".script-ui .ui-row .ui-cell.bg-red, .script-ui .ui-row .ui-cell.bg-blue");
   if (teamScores && mode === "POINT") {
     teamScores.forEach((label) => {
       let oldScore = label.textContent;
@@ -164,6 +165,7 @@ const handleIngame = () => {
         if (!ipcRenderer.sendSync("get-settings").enemy_point_indicator) return;
 
         const player = document.querySelector(".script-tab .nickname.bolder");
+        if (!player) return;
         const playerSide = player.closest(".player-list");
         const isLeft = playerSide.classList.contains("side-red");
         const isRight = playerSide.classList.contains("side-blue");

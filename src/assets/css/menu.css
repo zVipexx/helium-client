@@ -326,8 +326,10 @@
 
 .helium-menu[data-visible="true"] .tab:hover {
   box-shadow: inset 0 0 0 2px rgba(var(--border), .6);
+  color: rgb(var(--text));
 }
 
+.helium-menu[data-visible="true"] .tab:hover path,
 .helium-menu[data-visible="true"] .tab.active path {
   color: rgb(var(--text));
 }
@@ -597,7 +599,7 @@
   transition: color 0.2s;
 }
 
-.helium-menu[data-visible="true"] .option-group .title:hover {
+.helium-menu[data-visible="true"] .option-group.dropdown .title:hover {
   color: rgb(var(--text));
 }
 
@@ -686,7 +688,7 @@
 
 .helium-menu[data-visible="true"] .option.button {
   background: none;
-  border: 2px dotted rgb(var(--border))
+  border: 2px solid rgb(var(--border));
 }
 
 .helium-menu[data-visible="true"] .option.button:after {
@@ -1014,13 +1016,26 @@
 .helium-menu[data-visible="true"] #add-css {
   justify-content: center;
   color: rgb(var(--text-inactive));
+  border: 2px dashed rgb(var(--border));
   transition: 0.2s;
   cursor: pointer;
   flex-direction: column;
+  height: 192px;
 }
 
 .helium-menu[data-visible="true"] #add-css:hover {
   color: rgb(var(--text));
+}
+
+.helium-menu[data-visible="true"] #add-css svg {
+  margin-bottom: 0.5rem;
+  color: rgb(var(--accent));
+}
+
+.helium-menu[data-visible="true"] #open-css-folder {
+  color: rgb(var(--text-inactive));
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .open-css {
@@ -1029,6 +1044,7 @@
   margin-right: 1rem;
 }
 
+.helium-menu[data-visible="true"] #open-css-folder:hover,
 .helium-menu[data-visible="true"] .open-css:hover {
   color: rgb(var(--text));
 }

@@ -241,7 +241,7 @@ const handleKeybinds = () => {
 
       case settings.screenshot_keybind:
         const dataURL = await ipcRenderer.invoke("screenshot");
-        if (settings.copy_screenshots) clipboard.writeImage(nativeImage.createFromDataURL(dataURL));
+        clipboard.writeImage(nativeImage.createFromDataURL(dataURL));
         document.dispatchEvent(new CustomEvent("custom-notification", {
           detail: {
             message: "Screenshot copied to clipboard!",
@@ -347,6 +347,11 @@ const handleButtons = () => {
       ipcRenderer.send("update-setting", setting, "None");
       btn.nextElementSibling.textContent = "None";
     })
+  })
+
+  const openCSSFolder = document.querySelector(".menu #open-css-folder");
+  openCSSFolder.addEventListener("click", () => {
+    ipcRenderer.send("open", ipcRenderer.sendSync("get-css-path"))
   })
 
   const addCSSButton = document.querySelector(".menu #add-css");
@@ -777,7 +782,7 @@ const addCSS = (rawCSS) => {
     localStorage.setItem("helium-css-states", JSON.stringify(states));
   })
 
-  cssList.prepend(css)
+  cssList.insertBefore(css, cssList.children[1])
 }
 
 const handleCSS = () => {

@@ -30,7 +30,6 @@
       "block_ingame_reload": true,
       "outside_closes_menu": true,
       "instant_search": true,
-      "copy_screenshots": true,
       "menu_keybind": "ShiftRight",
       "restart_keybind": "F1",
       "screenshot_keybind": "F2",

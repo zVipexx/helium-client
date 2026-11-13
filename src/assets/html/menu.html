@@ -11,7 +11,7 @@
 </div>
 <div class="menu">
   <div class="sidebar">
-    <div class="header">
+    <div class="header" data-title="Helium is currently still in it's beta phase. Bugs and unnatural behaviour can occur.">
       Helium
       <span id="state">beta</span>
     </div>
@@ -133,6 +133,16 @@
             <div class="checkbox">
               <input type="checkbox" id="uncapped_fps" data-setting="uncapped_fps" class="requires-restart">
               <label for="uncapped_fps"></label>
+            </div>
+          </div>
+          <div class="option">
+            <div class="wrapper">
+              In Process GPU
+              <span class="description">For specific compatibility issues. Recommended to keep off</span>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" id="in_process_gpu" data-setting="in_process_gpu" class="requires-restart">
+              <label for="in_process_gpu"></label>
             </div>
           </div>
         </div>
@@ -326,9 +336,18 @@
           </div>
         </div>
         <div class="option-group" id="css-list">
+          <div class="title">
+            CSS List
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="open-css-folder" data-title="Open CSS Folder">
+              <path d="M21 9L21 3M21 3H15M21 3L13 11M10 5H7.8C6.11984 5 5.27976 5 4.63803 5.32698C4.07354 5.6146 3.6146 6.07354 3.32698 6.63803C3 7.27976 3 8.11984 3 9.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7202 19 17.8802 19 16.2V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
           <div class="option button" id="add-css">
-            Add CSS
-            <span class="description">Or drag and drop</span>
+            <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 16.2422C2.79401 15.435 2 14.0602 2 12.5C2 10.1564 3.79151 8.23129 6.07974 8.01937C6.54781 5.17213 9.02024 3 12 3C14.9798 3 17.4522 5.17213 17.9203 8.01937C20.2085 8.23129 22 10.1564 22 12.5C22 14.0602 21.206 15.435 20 16.2422M8 16L12 12M12 12L16 16M12 12V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Select CSS file from disk
+            <span class="description">or drag and drop</span>
           </div>
         </div>
       </div>
@@ -494,16 +513,6 @@
             <div class="checkbox">
               <input type="checkbox" id="instant_search" data-setting="instant_search">
               <label for="instant_search"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Copy Screenshots
-              <span class="description">Automatically copy screenshots made by the client</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="copy_screenshots" data-setting="copy_screenshots">
-              <label for="copy_screenshots"></label>
             </div>
           </div>
         </div>

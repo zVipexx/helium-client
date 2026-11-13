@@ -16,7 +16,7 @@ const handleSettings = () => {
       document.body.append(s);
       const fit = (i) => {
         s.textContent = i.value;
-        i.style.width = s.offsetWidth + 32 + "px";
+        i.style.width = Math.min(s.offsetWidth + 32, 128) + "px";
       };
       input.addEventListener("input", () => fit(input));
       fit(input);

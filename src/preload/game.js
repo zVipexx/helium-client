@@ -81,8 +81,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const fetchAll = async () => {
     const [customizations, clancustomizations, ktiers] = await Promise.all([
-      fetch("https://raw.githubusercontent.com/zVipexx/dawn-client/refs/heads/main/badges.json").then((r) => r.json()),
-      fetch("https://raw.githubusercontent.com/zVipexx/dawn-client/refs/heads/main/clans.json").then((r) => r.json()),
+      fetch("https://raw.githubusercontent.com/zVipexx/helium-client/refs/heads/main/src/assets/json/badges.json").then((r) => r.json()),
+      fetch("https://raw.githubusercontent.com/zVipexx/helium-client/refs/heads/main/src/assets/json/clans.json").then((r) => r.json()),
       fetch("https://ktiers-production.up.railway.app/api/players").then((r) => r.json())
     ]);
 
