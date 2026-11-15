@@ -3,7 +3,7 @@
 <div class="restart-now">
   Some changes made need a Client restart to apply.
   <div class="wrapper button filled confirm" id="restart">
-    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M2 10C2 10 4.00498 7.26822 5.63384 5.63824C7.26269 4.00827 9.5136 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.89691 21 4.43511 18.2543 3.35177 14.5M2 10V4M2 10H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
     Restart now
@@ -250,404 +250,548 @@
         </div>
       </div>
       <div id="weapons-options" class="options">
-        Coming Soon
-      </div>
-      <div id="themes-options" class="options">
-        <div class="wrapper">
-          <div class="theme active" data-theme="glass">
-            Glass Morphism
+        <div class="weapons">
+          <div class="weapon active" data-weapon="tomahawk" id="Tomahawk">
+            <img src="data:image/png;base64,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">
           </div>
-          <div class="theme disabled">
-            more coming
+          <div class="weapon" data-weapon="bayonet" id="Bayonet">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGIAAABACAYAAADhwaIzAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJiSURBVHgB7dqBkZpAFAbgx0wKsINQQjoIHZgOvA4uHTipwOvApIJLKsBU4F0FayrwOvjzNvsIyHgKyoLC/83swB2jwv7uLuwqQkRERERERERERERERNMGYCbUmw8nji00jCfdvmnZ2fbF9v/YdpckyZvQ1ZL3DliL2Mt5RUBFSK9+nwG1k5w6qGHkusnkMkUwGy2vGsxG6F3ngkh1s9XS1XixkRDQL2GraUfDeEA8uZaFUDNaWUvE47RkWp59KODd2mlWWQ7x/Q9FIqhcx1e5V3ryqZYV4tpX9tOuQ9H3Wtt733+XaBWUI75qKJ9wZfdl5+05GRO9oM89BVJ30ZiC8sZjLWOE8E1bop8xxDvaUhqcZ168RsYOoZWsewyl4FCG8livbIy1W2pCL3puFTMUh3Bz4UMYd7fUhF78zCoix3CK7owPkB7Kb2eOYfgWmgmVLBTfn2/RP4cb6qYSuREIE4xzLQ9a+ryr+ablo5YfnCGuGbClONjgLnRowFC29rmp0CEMN9BHD+Vmxoi2rFIyLQvbPtkhvx9zjPELW9+1/NYx5UU6crdBVPlQtFJ21b91s5QQSirx7LT8lLDimAkH/eNQmfJGmP7wA7FDeLjLEY+zz86E/gWxtzKr/d8/6RdrK7FvAvznT/dpXi/+i1XE2Yc2lDcBzzic2e3Ko0wVym5p3vKlMWaQW5/DaKDscq76MUJHoYx//eMYhDHA20qHLgxleusfBYQ7JC/apJ6F0mStZbrjg4cwAEf9jZS1PHeqNYBTJP2xQPxq5KoWDBehhmRd40qIiIiIiIiIiIiIaGB/AdsAyaHPONJnAAAAAElFTkSuQmCC">
           </div>
-        </div>
-        <div class="option-group">
-          <div class="option">
-            <div class="wrapper">
-              <span>Accent Color</span>
-              <span class="description">Controls the main Color of the Client Menu</span>
-            </div>
-            <div class="wrapper row color">
-              <input type="color" data-setting="accent_color">
-              <input type="text" data-setting="accent_color">
-            </div>
+          <div class="weapon" data-weapon="shark" id="Shark">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEoAAABACAYAAAC9S+EXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAALySURBVHgB7ZqBddowEIZ/+jpAO0HcDdIJ4kxQMkGyAXSCkgnSDaATtJ0AMgGwgTIBbKDeVUcjXGxZigHb3PfePQlLNtLpJJ1PBhRFURRFUZSTY63NSL7hAniHREhBY0qWJBmUw7AV2VfUoirI0UFoUD+QPHCKSN4jjWt0E14qMBgMZogk2qJoNHJK/BHJ0HLEkiZwbV0hgSiLEpO9L1yONuNTQe0dUvKE/cFsXlGimBGZ6qNcmuP/aTfkFZ1SI78zklu6Z4EjIkooDpLx8lxWVBKzRQIhi+LGTKRRX1G9NmVefkr3LKRRfsNevLzx8v/qkYINAtCzuR0/0QBiDNehgR0EHsKNGeJ8+Ir28387hzQWpJRbzsh6O4UbZEPymcoOWlxIUUt0d4er4jtc30eF6xNvmdkjNPX6qCRmXHLdlN0QsiiLy8GQNX0qKwz5UUk7REcZVxWqohwzsqbfVRVCikpyzjrILFQhpCiDy2DNrkJVJCSkqGdcBnOR0shCaNfjmzYkC7hpWLngdRxej/nV6+ByU2lR4qXeiSf7A/1lAeeVl67JlRbl41lXn5jB7XjBJaa2opieOaC/SEF3dSsnHy6cgGLkoWmiXJ/agTs+mqpZlTtXJ5hnpO5KUiPCoRh+ndi2abrHRDgzL7/r2AqvHVyTbKiDL3KU9QX7Ctj6dVADURb/xzFeznOSRzQNB8tE6lhLk/87tccjr9uO2hZVtXUeGYPjcQPnGgSJ2vXOAZ/DwUUhixya/jxFY5ziLRnAR/QBObBkliRPJPcSMy+rP7dx5OgD1p3J1V4Xqe7IxtHIIUXnsG7DiWFjT7xBtQbpfAyj0DPb7Jm/hdgdehiqoIpycNDuqqpCXxWVEnB8wKVh3SeTsVS+U/bSouT7hdjIA7sheVlhX6ceYxDPTVlBnxWV8m6alRWoomrek/oNZxdYR9TdBRBLT4tbHz14C9YdaE68S0bSXVSV0+czhpDag3Uv1VdQFEVRFEVRFEVRFCWNP/sSiAUw1BG0AAAAAElFTkSuQmCC">
           </div>
-          <div class="option">
-            <div class="wrapper">
-              Menu Blur
-              <span class="description">Blurs the background while in the Client Menu</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="menu_blur" data-setting="menu_blur">
-              <label for="menu_blur"></label>
-            </div>
+          <div class="weapon" data-weapon="scar" id="SCAR">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHYAAABACAYAAADPhIOhAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAOjSURBVHgB7Zz/ddowEMe/9PX/kg2UCZpMEHeCdoPQCUgnSDJB0wlCJ0g7ATBB2glwJ4BOoN7V4mH8QJZsGSH7Pu9d5IctG+58p1+nAIIgCIIgCIJwSrTWE5IMwn9lZCTPJC8kConC351kZWSMIUMKuNf7fESimJdzy1cMGVLAtGLYWySI8dYqGYbKAYUk+aab8Ftl2CGZfvy6pIw5EsN0mI4x3JBMP/61ooxk3nK96zDZeCa5QgB00dHMkALspRVFJNOBou/6pN3hF5j7FMrzGWOSh9ILtPa5xwiR0EX4zUof5UZSIEMzFiQzkuVoNMoPXWCMNyWZkFSj2ILqfcC5YkLZix42c5JbbbxQF+F27lDvzkXHjT2WHvBiDjelj/PSsaocj40oCFVyuOuF9X1JnruxXfQWzWEjZRBCoDyuZb1zqH60XfQGzfkFIRZ3umYU0cawOYRYsFGtQ6k2hv0LISY3tpPisemibCfbGFY4Y9oYdgPhbBGP7SltDDvsbIEzp80ERU7yYMqNkdxyvSqV/FJMUNNlF5rT2LBmEvvRo8ofUy75Dw2wuXiC0Akx21gZB3dIm1DcFg7d7LE5dqGchQ2+ttS7IHlnjhX2FxdYriDtf7z12K6gEL/CMFaQZtQcfj52MqbHdkVMb/2BYnEkRxF9uF9xKPooFJ3HDLKM6YaOy9Tz626T4lbaH2vCnExQhOUTPKFwOqPiGv4jBOvMnxg2LJze4t0UcDYEyRcU8wKuWNfDxbDh8Q7HW8i4PC9wiSLprY7fGAr68JaLU7NGAOg+N3p/X1CZ+7r6vRru6CLjb4X4TMj7viMAugjt77HLL+MU1GVdvb4ZNqMi1HaR7dy3gv8QKiflXyIifWtjQ41hr8gwFyTXXMK/18pNglP+r+CApU3y4si9x3538duSEZreeKxRYob2HBwfmgTtBdzh6PGMSPQpFE8QZnout5zznUTIJCS3QIcd5swtzxnr/X29riH55AkFyXusCcEhN04fndEx4XgGPzgk8wa0ky5OJG1YoyzeHKYQjkXN+Z9wZ9su86qPguCG7mYrpnJ47vxI3ZUueubTGOG3TLLrsaS4GRqsptQwO7YhuQJ7IBuOw/bClMu6rY2CBV10YF51Nyj0hOTaWOMV3xB+79Cdo7cKXaObZx9UuYdwfrQ0cLTZIcGRBgYWo6aEo4HFqKliDHyoBy1tah/QRZrJ3Bh12P96to+wgSEIgiAIgiAIgiAIwtnxD52nfFN87gaVAAAAAElFTkSuQmCC">
           </div>
-          <div class="option" data-requires="menu_blur">
-            <div class="wrapper">
-              <span>Menu Blur Strength</span>
-              <span class="description">Strength of the background blur</span>
-            </div>
-            <div class="wrapper row range">
-              <input type="range" data-setting="menu_blur_strength" min="1" max="20" step="1">
-              <input type="number" data-setting="menu_blur_strength" min="1" max="20" step="1">
-            </div>
+          <div class="weapon" data-weapon="ar9" id="AR-9">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH4AAABACAYAAADcU8NVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAASiSURBVHgB7Z37WdswEMAv/fi/yQSoE+BOQJig7QQNEzSdADpBYYKkEwQmSDpBwwQRExAmUO+wnCjGls9O/JL0+z7hSD7Lj7Med5IMQODkKKU2GBR0mA8Q8JKTKh5f8rE65AYCneQMAkdDLzxuLjFsMfyFHhAUfySo9Fvc9K5mC238EaDSJ9BDpROhxFeEeu64EQUySc9+PBgMOtUEHK14vLcIN0MdvUjtFrr9k3jjUssL0A8M01ZGPmP9c43p21Te5vEUj444Xpzo/EPgM9H53yd5957EZi3gxpC/0WkbI00YsudG+tJy/DJ1HVnHb2o4/0RV5xw6wimqes6bT2be7ndynPFAzTymmJ6UCmE5Xqhsc9E8fljD+SOozgjDM3SAQVaiiquz3cNIqrkc2U57qDqGxHBle55lUHGztWSKP+B5fyaRs4zM6I2ewf7Nlhg+QeAUCAxLfMayxDGPqLC7gjw5HNTMZ2Zbl5ORSMlIDN+c6aQ0jwC+sogIn//HnH1lOpgH+jpjXoRI/V7gxfyCQBOQcm/heN4pvgpj2HeSAj0keO48JSjeH4QZqVrVP+hAzCHQO0jxMpUmUvEtHHYMSP7acGvOIdAHDs05VOCBja5inzLZ8UInke/6ypLhLXQLusEpuIOEcs+YbP4sM0+YEZvnLhlweUXFr6FH4PUvcPMVusuqhOza9LgVgff+D7LdylvMZ5REBuAoxoCIhPaQEPeBJOyvo9aChPdNtfUkZ/coaaKdHY/HG3zWNVdbzPEarqF5bC+VSPa7bs61qfg/0A620b/dfIlgx9fHAtrBVuJ3bX9QfH20UtvoId+8AbSg+CbAPkZbloXMSfdG8RNol1lLHcxVTvowsXZcV/wltAspvY3p10+WfW+l3nXF1zFnYAWxZ1Ay5adqP4O3KWwdvDH9cXpePU2fxodOLmlqa3+XOJQeHA1CCR2nzpKEeN7am7mE+SYynKqcqvzPDc5akpZ9AnwhNX2aw3dmvtMSeTZa5ZPrNuc6XsAnFI+NKjn3Xe3n3nOIoCHwXDPLdZz7ZM5JhswwqcpLUKYfUaa5ORbbkq3IJ8VzBkZKm156GdYDU5wWZjQ1ZMzy4DlPQdV3UA1CSVTch3hh5k9yAhrAck2LUOLfM4KSaDfpHVO8Sds+7569qupfmXIXUI174Nv2Y2gGU/FbHZ8D/yXtP1i9RYrHD6iI4jcnRO2uXBU3QVHWuXz6MIJkygmogH5hJkxxCQ1gW5zpjeLJa6bi5c9FJa2OkihhX9VSeGx77aFvn0KRUGzKVDJ1UJH3+GJRP4IGhki5pFgaLJFhgWnLMNvgDXiAbxMxOCVPgAf4pvgnjpDq0Ldq6iKU+Gycd2n6pniu9652G7ttvFJ8iY8OhRLvIJIhE0q8g0iGTCjxDiIZMgIcJyg+m6Fqd8Fl7fioeO7UKgEO46PiuSZd1XH5XuCj4rlOHAEO453iC1aTmghwGF9Xy3IU77RJ553iFX/pcujVOwZ12gRDjuarceR6Sejc2ZmBo/ioeO40a2IFjhI8d3ZW4Cg+/t85mRFfw/4jhG/xCosnA12GfPAYvtD0Ktf98Tb+A7f4VXoWHt5yAAAAAElFTkSuQmCC">
           </div>
-          <div class="option">
-            <div class="wrapper">
-              <span>Menu Opacity</span>
-              <span class="description">Opacity of the Menu background</span>
-            </div>
-            <div class="wrapper row range">
-              <input type="range" data-setting="menu_opacity" min="0" max="100" step="1">
-              <input type="number" data-setting="menu_opacity" min="0" max="100" step="1">
-            </div>
+          <div class="weapon" data-weapon="vita" id="VITA">
+            <img src="data:image/png;base64,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">
+          </div>
+          <div class="weapon" data-weapon="revolver" id="Revolver">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIgAAABACAYAAADBAT+LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGiGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNy4yLWMwMDAgNzkuMWI2NWE3OSwgMjAyMi8wNi8xMy0xNzo0NjoxNCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0RXZ0PSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMi0xMS0yNlQxMzo1Mjo0My0wNTowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjItMTEtMzBUMjA6MDU6MTAtMDU6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMTEtMzBUMjA6MDU6MTAtMDU6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOmU5ODM3ZDM5LTRkMjUtN2I0YS1hNjYyLTY0MTY3NjQ3MTVhMiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDphOGI4NTRmZi0wMjJmLTBjNDgtYWJlZC00YjIxMmVhZDBjOWIiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDphOGI4NTRmZi0wMjJmLTBjNDgtYWJlZC00YjIxMmVhZDBjOWIiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmE4Yjg1NGZmLTAyMmYtMGM0OC1hYmVkLTRiMjEyZWFkMGM5YiIgc3RFdnQ6d2hlbj0iMjAyMi0xMS0yNlQxMzo1Mjo0My0wNTowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDIzLjUgKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NzNhZTViNS00ZjI0LTA1NGItOGY2Yy0yOGI2ZmYxNWQyMzIiIHN0RXZ0OndoZW49IjIwMjItMTEtMzBUMjA6MDA6MjQtMDU6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyMy41IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ZTk4MzdkMzktNGQyNS03YjRhLWE2NjItNjQxNjc2NDcxNWEyIiBzdEV2dDp3aGVuPSIyMDIyLTExLTMwVDIwOjA1OjEwLTA1OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjMuNSAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Pyy5NQAABkhJREFUeJztnU9oI1Ucxz8rc4iQQw459NDDChVzKOihYEHBiopdVBB00cWCigVXPKzgQUUXDyIiexAR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">
+          </div>
+          <div class="weapon" data-weapon="mac10" id="MAC-10">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAYAAABFqxrgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAK2SURBVHgB7ZvrdZtAEIUvOfkfqQKvK4hTQUgFdioIqcAuQe4gqSBxBSnBpAK5A+MKTCogM8sQI3yyu+JlWM93zgi0DFpx2dnHSABHUFWVIXskuyf7gkhIQpzogq9ocyL+l61DBdmnJEkKxI7c+f/xAyvnTaCfcRzbkBAbrJjQcLilTRrgekdWog4TtgfZ2jIKm9JRh6FNRvaR7Df57jATbwP9ykC/M9dButC2QI2xUNzffGu5GrIdRkaELrs3I7Ql7OG5wJHhL/kTh63poCVJCF7I23dkf2SffTdiXG7EUilrfD7T53HLRSIflkrFd1wRlZ3JCYUcW0rnZ7+jbFM8XVQfWNRT3kmkd8/grnjVHZ+DLd90Hh18zTxWARgOF4SIED0sQmjPHy0swo4sR93hvEqeDZEyMvyStwZxY6hjfHDOE2RycY94sSL41g4xjwz/UBEQvoqMmtfeErb84hPhBHFzzi++pXSziMpRzyOauYQRa1ZrplO+FngVeu0bIjeuRIjrPNT5gTUkY40zHPoI0JxHltHuVyx/Wn4RlFQZAidpMX2IFGQfZN/gMJmSwV1/jqnxZKrHwjjqv/Wc+zjHPGHqcMgH/u5RhiZah8AjypQ5i2NWvyWe35TdHCLcwJ2+G4pvQneNOu7Z7/uL/VpGcZeR7atp2GMgk48Obap6/mAgub0ORWcbCjfv077D+SKp+pFiALGsIs8xgFnDIQS+rTgenqFu0ZNYWsJmSEjElFR5j57EJELvCVlMIhj0RHOMUBEsKgLC/64zJ5yWu/L4lOJjWmUFerJEEULWADw5usFIaDhARbCoCFARLCoCVASLigAVwaIiQEWwqAhQESwqAlQEi4oAFcGiIkBFsKgIWK8IBUZkUSJU9b/QTIDrqI8mL60l8IVxtjnHU9a5+1Rt81zkJUbiL9p09fPZVU8oAAAAAElFTkSuQmCC">
+          </div>
+          <div class="weapon" data-weapon="m60" id="M60">
+            <img src="data:image/png;base64,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">
+          </div>
+          <div class="weapon" data-weapon="lar" id="LAR">
+            <img src="data:image/png;base64,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">
+          </div>
+          <div class="weapon" data-weapon="weatie" id="Weatie">
+            <img src="data:image/png;base64,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">
           </div>
         </div>
-      </div>
-      <div id="css-options" class="options">
-        <div class="option-group">
-          <div class="option">
-            <div class="wrapper">
-              Enable CSS
-              <span class="description">Toggle for all CSS</span>
+        <div class="content">
+          <div class="weapon-content">
+            <div class="wrapper spaced">
+              <span class="title weapon-name"></span>
+              <div class="wrapper button confirm" id="reset-weapon">Reset</div>
             </div>
-            <div class="checkbox">
-              <input type="checkbox" id="enable_css" data-setting="enable_css">
-              <label for="enable_css"></label>
-            </div>
-          </div>
-          <div class="option dropdown">
-            <div class="wrapper top row spaced">
-              <div class="wrapper">
-                <div class="wrapper row">
-                  Quick CSS
-                  <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
+            <div class="option large">
+              <div class="wrapper row spaced">
+                <div class="weapon-offset">
+                  <span>Offset</span>
+                  <div class="wrapper row">
+                    X
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="offset_x" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="offset_x" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
+                  <div class="wrapper row">
+                    Y
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="offset_y" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="offset_y" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
+                  <div class="wrapper row">
+                    Z
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="offset_z" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="offset_z" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
                 </div>
-                <span class="description">Directly load CSS code</span>
+                <div class="weapon-rotation">
+                  <span>Rotate</span>
+                  <div class="wrapper row">
+                    X
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="rotate_x" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="rotate_x" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
+                  <div class="wrapper row">
+                    Y
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="rotate_y" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="rotate_y" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
+                  <div class="wrapper row">
+                    Z
+                    <div class="wrapper row range">
+                      <input type="range" data-weapon-setting="rotate_z" min="-0.5" max="0.5" step="0.01">
+                      <input type="number" data-weapon-setting="rotate_z" min="-0.5" max="0.5" step="0.01">
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="checkbox">
-                <input type="checkbox" id="enable_quick_css" data-setting="enable_quick_css">
-                <label for="enable_quick_css"></label>
+            </div>
+            <div class="option">
+              <div class="wrapper">
+                <span>Weapon Scale</span>
+                <span class="description">Change the size of this weapon</span>
+              </div>
+              <div class="wrapper row range">
+                <input type="range" data-weapon-setting="weapon_scale" min="0" max="2" step="0.05">
+                <input type="number" data-weapon-setting="weapon_scale" min="0" max="2" step="0.05">
               </div>
             </div>
-            <textarea placeholder="input css here" data-setting="quick_css"></textarea>
-          </div>
-        </div>
-        <div class="option-group" id="css-list">
-          <div class="title">
-            CSS List
-            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="open-css-folder" data-title="Open CSS Folder">
-              <path d="M21 9L21 3M21 3H15M21 3L13 11M10 5H7.8C6.11984 5 5.27976 5 4.63803 5.32698C4.07354 5.6146 3.6146 6.07354 3.32698 6.63803C3 7.27976 3 8.11984 3 9.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7202 19 17.8802 19 16.2V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="option button" id="add-css">
-            <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 16.2422C2.79401 15.435 2 14.0602 2 12.5C2 10.1564 3.79151 8.23129 6.07974 8.01937C6.54781 5.17213 9.02024 3 12 3C14.9798 3 17.4522 5.17213 17.9203 8.01937C20.2085 8.23129 22 10.1564 22 12.5C22 14.0602 21.206 15.435 20 16.2422M8 16L12 12M12 12L16 16M12 12V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Select CSS file from disk
-            <span class="description">or drag and drop</span>
-          </div>
-        </div>
-      </div>
-      <div id="preferences-options" class="options">
-        <div class="option-group dropdown" id="animations">
-          <div class="title top">
-            Animations
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Menu Animation
-              <span class="description">Animation when opening / closing the menu</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="menu_animation" data-setting="menu_animation">
-              <label for="menu_animation"></label>
+            <div class="option">
+              <div class="wrapper">
+                <span>Custom Inspect Duration</span>
+                <span class="description">Duration of the Custom Inspect in seconds</span>
+              </div>
+              <div class="wrapper row range">
+                <input type="range" data-weapon-setting="inspect_duration" min="0.05" max="2" step="0.05">
+                <input type="number" data-weapon-setting="inspect_duration" min="0.05" max="2" step="0.05">
+              </div>
             </div>
           </div>
-          <div class="option" data-requires="menu_animation">
-            <div class="wrapper">
-              <span>Menu Animation Duration</span>
-              <span class="description">Duration of the menu animation in seconds</span>
+          <div class="global-content">
+            <div class="wrapper spaced">
+              <span class="title">Global</span>
+              <div class="wrapper button confirm" id="reset-global">Reset</div>
             </div>
-            <div class="wrapper row range">
-              <input type="range" data-setting="menu_animation_duration" min="0.05" max="1" step="0.05">
-              <input type="number" data-setting="menu_animation_duration" min="0.05" max="1" step="0.05">
+            <div class="option large">
+              <div class="wrapper row spaced">
+                Custom Color
+                <div class="checkbox">
+                  <input type="checkbox" id="custom_weapon_color" data-setting="custom_weapon_color">
+                  <label for="custom_weapon_color"></label>
+                </div>
+              </div>
+              <div class="wrapper row spaced">
+                Chroma
+                <div class="checkbox">
+                  <input type="checkbox" id="weapon_chroma" data-setting="weapon_chroma">
+                  <label for="weapon_chroma"></label>
+                </div>
+              </div>
+              <div class="wrapper row spaced">
+                <span>Color</span>
+                <div class="wrapper row color">
+                  <input type="color" data-setting="weapon_color">
+                  <input type="text" data-setting="weapon_color">
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Tab Animation
-              <span class="description">Animation when switching between Menu tabs</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="tab_animation" data-setting="tab_animation">
-              <label for="tab_animation"></label>
-            </div>
-          </div>
-          <div class="option" data-requires="tab_animation">
-            <div class="wrapper">
-              <span>Tab Animation Duration</span>
-              <span class="description">Duration of the tab switching animation in seconds</span>
-            </div>
-            <div class="wrapper row range">
-              <input type="range" data-setting="tab_animation_duration" min="0.05" max="1" step="0.05">
-              <input type="number" data-setting="tab_animation_duration" min="0.05" max="1" step="0.05">
-            </div>
-          </div>
-        </div>
-        <div class="option-group dropdown" id="sound-effects">
-          <div class="title top">
-            Sound Effects
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              UI Sounds
-              <span class="description">Play sound effects when interacting with the Client Menu</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="ui_sounds" data-setting="ui_sounds">
-              <label for="ui_sounds"></label>
-            </div>
-          </div>
-          <div class="option" data-requires="ui_sounds">
-            <div class="wrapper">
-              <span>UI Sounds Volume</span>
-              <span class="description">Master Volume of all Menu sounds</span>
-            </div>
-            <div class="wrapper row range">
-              <input type="range" data-setting="ui_sounds_volume" min="1" max="100" step="1">
-              <input type="number" data-setting="ui_sounds_volume" min="1" max="100" step="1">
-            </div>
-          </div>
-          <div class="option" data-requires="ui_sounds">
-            <div class="wrapper">
-              Click Sounds
-              <span class="description">Play a sound when interacting with controls</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="click_sounds" data-setting="click_sounds">
-              <label for="click_sounds"></label>
-            </div>
-          </div>
-          <div class="option force-disabled" data-requires="ui_sounds">
-            <div class="wrapper">
-              Menu Sounds
-              <span class="description">Play a sound when opening and closing the menu (haven't found a good sound for this yet)</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="menu_sounds" data-setting="menu_sounds">
-              <label for="menu_sounds"></label>
-            </div>
-          </div>
-        </div>
-        <div class="option-group dropdown" id="client-behaviour">
-          <div class="title top">
-            Client Behaviour
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Discord Activity
-              <span class="description">Display your activity as Discord Rich Presence</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="discord_rpc" data-setting="discord_rpc" class="requires-restart">
-              <label for="discord_rpc"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Auto Fullscreen
-              <span class="description">Always start the Client in fullscreen</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="auto_fullscreen" data-setting="auto_fullscreen">
-              <label for="auto_fullscreen"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Hold to Confirm
-              <span class="description">Prevents accidental clicks on important buttons by having to press for 1 second</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="hold_to_confirm" data-setting="hold_to_confirm">
-              <label for="hold_to_confirm"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Prevent Reload while ingame
-              <span class="description">Disables the Reload Keybind while in a game</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="block_ingame_reload" data-setting="block_ingame_reload">
-              <label for="block_ingame_reload"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Outside Closes Menu
-              <span class="description">Pressing outside of the menu closes it</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="outside_closes_menu" data-setting="outside_closes_menu">
-              <label for="outside_closes_menu"></label>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Instant Search
-              <span class="description">Typing automatically focuses the search bar</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="instant_search" data-setting="instant_search">
-              <label for="instant_search"></label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="keybinds-options" class="options">
-        <div class="option-group">
-          <div class="option">
-            <div class="wrapper">
-              Menu Keybind
-              <span class="description">Toggles the Menu</span>
-            </div>
-            <div class="keybind" data-setting="menu_keybind"></div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Quick Restart
-              <span class="description">Restarts the Client</span>
-            </div>
-            <div class="wrapper row">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
-                <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="keybind" data-setting="restart_keybind"></div>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Screenshot
-              <span class="description">Screenshots the current page (and copies it to clipboard)</span>
-            </div>
-            <div class="wrapper row">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
-                <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="keybind" data-setting="screenshot_keybind"></div>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Reload Page
-              <span class="description">Reloads the current page</span>
-            </div>
-            <div class="wrapper row">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
-                <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="keybind" data-setting="reload_keybind"></div>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Toggle Fullscreen
-              <span class="description">Toggles Fullscreen</span>
-            </div>
-            <div class="wrapper row">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
-                <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="keybind" data-setting="fullscreen_keybind"></div>
-            </div>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Toggle DevTools
-              <span class="description">Toggles DevTools</span>
-            </div>
-            <div class="wrapper row">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
-                <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <div class="keybind" data-setting="devtools_keybind"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="browse-options" class="options">
-        Coming soon
-      </div>
-      <div id="scripts-options" class="options">
-        <div class="option-group dropdown" id="csl">
-          <div class="title top">
-            Custom Skin Link
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </div>
-          <div class="option">
-            <div class="wrapper">
-              Enabled
-              <span class="description">Needs player textures ENABLED in kirka settings - only applies in game</span>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" id="csl_enabled" data-setting="csl_enabled">
-              <label for="csl_enabled"></label>
-            </div>
-          </div>
-          <div class="option" data-requires="csl_enabled">
-            <div class="wrapper">
-              Swap mode
-              <span class="description">Mode Selection for player textures</span>
-            </div>
-            <select id="csl_swap_type" data-setting="csl_swap_type">
-              <option value="solid">Solid colors</option>
-              <option value="url">Custom texture</option>
-            </select>
-          </div>
-          <div class="option" data-requires="csl_swap_type" data-value="solid">
-            <div class="wrapper">
-              <span>Head Color</span>
-              <span class="description">Head Color of enemies</span>
-            </div>
-            <div class="wrapper row color">
-              <input type="color" data-setting="csl_head_color">
-              <input type="text" data-setting="csl_head_color">
-            </div>
-          </div>
-          <div class="option" data-requires="csl_swap_type" data-value="solid">
-            <div class="wrapper">
-              <span>Body Color</span>
-              <span class="description">Body Color of enemies</span>
-            </div>
-            <div class="wrapper row color">
-              <input type="color" data-setting="csl_body_color">
-              <input type="text" data-setting="csl_body_color">
-            </div>
-          </div>
-          <div class="option" data-requires="csl_swap_type" data-value="url">
-            <div class="wrapper">
-              Custom Texture Link
-              <span class="description">Upload a custom texture for every player</span>
-            </div>
-            <input type="text" data-setting="csl_link" placeholder="https://< >.png">
           </div>
         </div>
       </div>
     </div>
+    <div id="themes-options" class="options">
+      <div class="wrapper">
+        <div class="theme active" data-theme="glass">
+          Glass Morphism
+        </div>
+        <div class="theme disabled">
+          more coming
+        </div>
+      </div>
+      <div class="option-group">
+        <div class="option">
+          <div class="wrapper">
+            <span>Accent Color</span>
+            <span class="description">Controls the main Color of the Client Menu</span>
+          </div>
+          <div class="wrapper row color">
+            <input type="color" data-setting="accent_color">
+            <input type="text" data-setting="accent_color">
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Menu Blur
+            <span class="description">Blurs the background while in the Client Menu</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="menu_blur" data-setting="menu_blur">
+            <label for="menu_blur"></label>
+          </div>
+        </div>
+        <div class="option" data-requires="menu_blur">
+          <div class="wrapper">
+            <span>Menu Blur Strength</span>
+            <span class="description">Strength of the background blur</span>
+          </div>
+          <div class="wrapper row range">
+            <input type="range" data-setting="menu_blur_strength" min="1" max="20" step="1">
+            <input type="number" data-setting="menu_blur_strength" min="1" max="20" step="1">
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            <span>Menu Opacity</span>
+            <span class="description">Opacity of the Menu background</span>
+          </div>
+          <div class="wrapper row range">
+            <input type="range" data-setting="menu_opacity" min="0" max="100" step="1">
+            <input type="number" data-setting="menu_opacity" min="0" max="100" step="1">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="css-options" class="options">
+      <div class="option-group">
+        <div class="option">
+          <div class="wrapper">
+            Enable CSS
+            <span class="description">Toggle for all CSS</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="enable_css" data-setting="enable_css">
+            <label for="enable_css"></label>
+          </div>
+        </div>
+        <div class="option dropdown large" id="quick-css">
+          <div class="wrapper top row spaced">
+            <div class="wrapper">
+              <div class="wrapper row">
+                Quick CSS
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <span class="description">Directly load CSS code</span>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" id="enable_quick_css" data-setting="enable_quick_css">
+              <label for="enable_quick_css"></label>
+            </div>
+          </div>
+          <textarea placeholder="input css here" data-setting="quick_css"></textarea>
+        </div>
+      </div>
+      <div class="option-group" id="css-list">
+        <div class="title">
+          CSS List
+          <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="open-css-folder" data-title="Open CSS Folder">
+            <path d="M21 9L21 3M21 3H15M21 3L13 11M10 5H7.8C6.11984 5 5.27976 5 4.63803 5.32698C4.07354 5.6146 3.6146 6.07354 3.32698 6.63803C3 7.27976 3 8.11984 3 9.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H14.2C15.8802 21 16.7202 21 17.362 20.673C17.9265 20.3854 18.3854 19.9265 18.673 19.362C19 18.7202 19 17.8802 19 16.2V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="option button" id="add-css">
+          <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 16.2422C2.79401 15.435 2 14.0602 2 12.5C2 10.1564 3.79151 8.23129 6.07974 8.01937C6.54781 5.17213 9.02024 3 12 3C14.9798 3 17.4522 5.17213 17.9203 8.01937C20.2085 8.23129 22 10.1564 22 12.5C22 14.0602 21.206 15.435 20 16.2422M8 16L12 12M12 12L16 16M12 12V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Select CSS file from disk
+          <span class="description">or drag and drop</span>
+        </div>
+      </div>
+    </div>
+    <div id="preferences-options" class="options">
+      <div class="option-group dropdown" id="animations">
+        <div class="title top">
+          Animations
+          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Menu Animation
+            <span class="description">Animation when opening / closing the menu</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="menu_animation" data-setting="menu_animation">
+            <label for="menu_animation"></label>
+          </div>
+        </div>
+        <div class="option" data-requires="menu_animation">
+          <div class="wrapper">
+            <span>Menu Animation Duration</span>
+            <span class="description">Duration of the menu animation in seconds</span>
+          </div>
+          <div class="wrapper row range">
+            <input type="range" data-setting="menu_animation_duration" min="0.05" max="1" step="0.05">
+            <input type="number" data-setting="menu_animation_duration" min="0.05" max="1" step="0.05">
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Tab Animation
+            <span class="description">Animation when switching between Menu tabs</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="tab_animation" data-setting="tab_animation">
+            <label for="tab_animation"></label>
+          </div>
+        </div>
+        <div class="option" data-requires="tab_animation">
+          <div class="wrapper">
+            <span>Tab Animation Duration</span>
+            <span class="description">Duration of the tab switching animation in seconds</span>
+          </div>
+          <div class="wrapper row range">
+            <input type="range" data-setting="tab_animation_duration" min="0.05" max="1" step="0.05">
+            <input type="number" data-setting="tab_animation_duration" min="0.05" max="1" step="0.05">
+          </div>
+        </div>
+      </div>
+      <div class="option-group dropdown" id="sound-effects">
+        <div class="title top">
+          Sound Effects
+          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            UI Sounds
+            <span class="description">Play sound effects when interacting with the Client Menu</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="ui_sounds" data-setting="ui_sounds">
+            <label for="ui_sounds"></label>
+          </div>
+        </div>
+        <div class="option" data-requires="ui_sounds">
+          <div class="wrapper">
+            <span>UI Sounds Volume</span>
+            <span class="description">Master Volume of all Menu sounds</span>
+          </div>
+          <div class="wrapper row range">
+            <input type="range" data-setting="ui_sounds_volume" min="1" max="100" step="1">
+            <input type="number" data-setting="ui_sounds_volume" min="1" max="100" step="1">
+          </div>
+        </div>
+        <div class="option" data-requires="ui_sounds">
+          <div class="wrapper">
+            Click Sounds
+            <span class="description">Play a sound when interacting with controls</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="click_sounds" data-setting="click_sounds">
+            <label for="click_sounds"></label>
+          </div>
+        </div>
+        <div class="option force-disabled" data-requires="ui_sounds">
+          <div class="wrapper">
+            Menu Sounds
+            <span class="description">Play a sound when opening and closing the menu (haven't found a good sound for this yet)</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="menu_sounds" data-setting="menu_sounds">
+            <label for="menu_sounds"></label>
+          </div>
+        </div>
+      </div>
+      <div class="option-group dropdown" id="client-behaviour">
+        <div class="title top">
+          Client Behaviour
+          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Discord Activity
+            <span class="description">Display your activity as Discord Rich Presence</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="discord_rpc" data-setting="discord_rpc" class="requires-restart">
+            <label for="discord_rpc"></label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Auto Fullscreen
+            <span class="description">Always start the Client in fullscreen</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="auto_fullscreen" data-setting="auto_fullscreen">
+            <label for="auto_fullscreen"></label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Hold to Confirm
+            <span class="description">Prevents accidental clicks on important buttons by having to press for 1 second</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="hold_to_confirm" data-setting="hold_to_confirm">
+            <label for="hold_to_confirm"></label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Prevent Reload while ingame
+            <span class="description">Disables the Reload Keybind while in a game</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="block_ingame_reload" data-setting="block_ingame_reload">
+            <label for="block_ingame_reload"></label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Outside Closes Menu
+            <span class="description">Pressing outside of the menu closes it</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="outside_closes_menu" data-setting="outside_closes_menu">
+            <label for="outside_closes_menu"></label>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Instant Search
+            <span class="description">Typing automatically focuses the search bar</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="instant_search" data-setting="instant_search">
+            <label for="instant_search"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="keybinds-options" class="options">
+      <div class="option-group">
+        <div class="option">
+          <div class="wrapper">
+            Menu Keybind
+            <span class="description">Toggles the Menu</span>
+          </div>
+          <div class="keybind" data-setting="menu_keybind"></div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Quick Restart
+            <span class="description">Restarts the Client</span>
+          </div>
+          <div class="wrapper row">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
+              <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="keybind" data-setting="restart_keybind"></div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Screenshot
+            <span class="description">Screenshots the current page (and copies it to clipboard)</span>
+          </div>
+          <div class="wrapper row">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
+              <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="keybind" data-setting="screenshot_keybind"></div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Reload Page
+            <span class="description">Reloads the current page</span>
+          </div>
+          <div class="wrapper row">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
+              <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="keybind" data-setting="reload_keybind"></div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Toggle Fullscreen
+            <span class="description">Toggles Fullscreen</span>
+          </div>
+          <div class="wrapper row">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
+              <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="keybind" data-setting="fullscreen_keybind"></div>
+          </div>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Toggle DevTools
+            <span class="description">Toggles DevTools</span>
+          </div>
+          <div class="wrapper row">
+            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="hover clear-keybind" data-title="Clear Keybind">
+              <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <div class="keybind" data-setting="devtools_keybind"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="browse-options" class="options">
+      Coming soon
+    </div>
+    <div id="scripts-options" class="options">
+      <div class="option-group dropdown" id="csl">
+        <div class="title top">
+          Custom Skin Link
+          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="option">
+          <div class="wrapper">
+            Enabled
+            <span class="description">Needs player textures ENABLED in kirka settings - only applies in game</span>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="csl_enabled" data-setting="csl_enabled">
+            <label for="csl_enabled"></label>
+          </div>
+        </div>
+        <div class="option" data-requires="csl_enabled">
+          <div class="wrapper">
+            Swap mode
+            <span class="description">Mode Selection for player textures</span>
+          </div>
+          <select id="csl_swap_type" data-setting="csl_swap_type">
+            <option value="solid">Solid colors</option>
+            <option value="url">Custom texture</option>
+          </select>
+        </div>
+        <div class="option" data-requires="csl_swap_type" data-value="solid">
+          <div class="wrapper">
+            <span>Head Color</span>
+            <span class="description">Head Color of enemies</span>
+          </div>
+          <div class="wrapper row color">
+            <input type="color" data-setting="csl_head_color">
+            <input type="text" data-setting="csl_head_color">
+          </div>
+        </div>
+        <div class="option" data-requires="csl_swap_type" data-value="solid">
+          <div class="wrapper">
+            <span>Body Color</span>
+            <span class="description">Body Color of enemies</span>
+          </div>
+          <div class="wrapper row color">
+            <input type="color" data-setting="csl_body_color">
+            <input type="text" data-setting="csl_body_color">
+          </div>
+        </div>
+        <div class="option" data-requires="csl_swap_type" data-value="url">
+          <div class="wrapper">
+            Custom Texture Link
+            <span class="description">Upload a custom texture for every player</span>
+          </div>
+          <input type="text" data-setting="csl_link" placeholder="https://< >.png">
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 </div>

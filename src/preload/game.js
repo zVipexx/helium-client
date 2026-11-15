@@ -1,10 +1,12 @@
-const { initMenu } = require("./menu.js")
+const { initMenu } = require("./menu.js");
+const { handleCreate } = require("../handlers/create.js");
 const { handleFriends } = require("../handlers/friends.js");
 const { handleIngame } = require("../handlers/ingame.js");
 const { handleInspect } = require("../handlers/inspect.js");
 const { handleLobby } = require("../handlers/lobby.js");
 const { handleProfile } = require("../handlers/profile.js");
 const { handleServers } = require("../handlers/servers.js");
+const { handleSettings } = require("../handlers/settings.js");
 const { initCSL } = require("../addons/csl.js");
 const { ipcRenderer } = require("electron");
 const fs = require("fs");
@@ -62,7 +64,6 @@ ipcRenderer.on("download-progress", (_, progress) => {
 ipcRenderer.on("download-error", (_, error) => {
   document.querySelector("#update-installing-modal #info").textContent = `An Error occurred: \n ${error}`
   document.querySelector("#do-not-close").remove();
-  document.querySelector("#update-installing-modal").dataset.installing = "";
 })
 
 // main stuff
@@ -102,6 +103,10 @@ window.addEventListener("DOMContentLoaded", async () => {
       else quickCSS.innerHTML = "";
     }
     updateCSS();
+
+    const styles = document.createElement("style");
+    styles.innerHTML = fs.readFileSync(path.join(__dirname, "../assets/css/styles.css"), "utf8");
+    document.head.append(styles);
 
     const configurableStyles = document.createElement("style");
     configurableStyles.id = "helium-configurable-styles";
@@ -229,6 +234,23 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // site navigation that cant be filtered by url
 
+  const lobbyObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        switch (true) {
+          case node.matches(".vm--container"):
+            setTimeout(() => {
+              if (document.querySelector("div[data-modal='create-modal']")) handleCreate();
+              else if (document.querySelector("div[data-modal='settings']")) handleSettings();
+            }, 0);
+            break;
+        }
+      });
+    }
+  })
+
   new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
@@ -245,6 +267,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             }, 0);
             break;
           case node.matches(".interface"):
+            lobbyObserver.observe(document.querySelector(".interface"), { childList: true });
             waitForElement(".auth-user .avatar", () => handleLobby());
             break;
         }
@@ -255,10 +278,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   // initial load
 
   waitForElement(".auth-user .avatar", () => handleLobby());
+  lobbyObserver.observe(document.querySelector(".interface"), { childList: true });
 
   const handleResize = (_, size) => {
     const zoom = Math.min(size[0] / 1920, size[1] / 1080);
-    document.querySelector(".helium-menu").style.zoom = Math.abs(zoom - 1) <= 0.01 ? "" : zoom;
+    // document.querySelector(".helium-menu").style.zoom = Math.abs(zoom - 1) <= 0.01 ? "" : zoom;
   };
   handleResize(null, ipcRenderer.sendSync("get-size"));
   ipcRenderer.on("resize", handleResize);

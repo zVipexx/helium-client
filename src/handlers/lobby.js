@@ -1,17 +1,15 @@
-const { handleCreate } = require("./create.js");
-const { handleSettings } = require("../handlers/settings.js");
 const { ipcRenderer } = require("electron");
 
 const settings = ipcRenderer.sendSync("get-settings");
 
 const handleLobby = () => {
   const menuAvatar = document.querySelector(".menu .footer .avatar");
-  const menuNickname = document.querySelector(".menu .footer .nickname");
+  const menuNickname = document.querySelector(".menu .footer .a .nickname");
 
   const updateMenuAvatar = () => {
     const source = document.querySelector(".auth-user .avatar");
     const current = source && source.style.backgroundImage;
-    if (!current) return;
+    if (!current || !menuAvatar) return;
     menuAvatar.style.backgroundImage = current;
     localStorage.setItem("avatar_cache", current);
   };
@@ -20,7 +18,7 @@ const handleLobby = () => {
   const updateMenuNickname = () => {
     const nick = document.querySelector(".team-section .nickname");
     const current = nick && nick.textContent;
-    if (!current) return;
+    if (!current || !menuNickname) return;
     menuNickname.textContent = current;
     localStorage.setItem("nickname_cache", current);
   }
@@ -84,23 +82,6 @@ const handleLobby = () => {
     } else clanEl.classList.remove("helium-gradient");
   }
   applyClanCustomizations();
-
-  new MutationObserver((mutations) => {
-    for (const mutation of mutations) {
-      mutation.addedNodes.forEach((node) => {
-        if (node.nodeType !== Node.ELEMENT_NODE) return;
-
-        switch (true) {
-          case node.matches(".vm--container"):
-            setTimeout(() => {
-              if (document.querySelector("div[data-modal='create-modal']")) handleCreate();
-              else if (document.querySelector("div[data-modal='settings']")) handleSettings();
-            }, 0);
-            break;
-        }
-      });
-    }
-  }).observe(document.querySelector(".interface"), { childList: true });
 
   // ktiers and discord buttons
   const addSocialButtons = () => {

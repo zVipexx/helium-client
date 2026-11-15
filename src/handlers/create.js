@@ -225,10 +225,13 @@ const handleCreate = () => {
 
     const deletePreset = preset.querySelector("#delete-preset");
     deletePreset.addEventListener("click", () => {
-      preset.remove();
+      preset.classList.add("gone");
       const presets = JSON.parse(localStorage.getItem("helium-room-presets") || "[]").filter(e => e.id !== oldName);
       localStorage.setItem("helium-room-presets", JSON.stringify(presets));
-      if (!list.querySelectorAll(".preset").length) list.textContent = "No presets yet. Press Save Current to create one";
+      setTimeout(() => {
+        if (!list.querySelectorAll(".preset").length) list.textContent = "No presets yet. Press Save Current to create one";
+        preset.remove();
+      }, 200);
     });
 
     list.append(preset);

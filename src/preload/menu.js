@@ -5,52 +5,37 @@ const path = require("path");
 const fs = require("fs");
 
 let settings = ipcRenderer.sendSync("get-settings");
+let updateInfo;
 
-let updateInfo = {}
-
-const createMenu = (updateAvailable, info) => {
+const createMenu = () => {
   const menu = document.createElement("div");
   menu.classList.add("helium-menu");
-  menu.dataset.active = localStorage.getItem("helium-menu") || false;
-  menu.dataset.visible = localStorage.getItem("helium-menu") || false;
+  menu.dataset.active = "false";
+  menu.dataset.visible = "true";
   menu.dataset.theme = "glass";
   menu.innerHTML = fs.readFileSync(path.join(__dirname, "../assets/html/menu.html"), "utf8");
+  menu.style.setProperty("--accent", hexToRgb(settings.accent_color));
 
-  if (updateAvailable && info) {
-    setTimeout(() => {
-      handleUpdateAvailable();
-      document.dispatchEvent(new CustomEvent("custom-notification", { detail: { message: "An Update is available! Click here to open the Installer", onclick: () => { toggleMenu("open"), menu.querySelector(".update.available").click() } } }))
-    }, 0)
-  };
-
-  document.addEventListener("keydown", (e) => {
-    if (menu.dataset.active !== "true" || e.code === settings.menu_keybind || !settings.instant_search || document.querySelector("input:focus") || document.querySelector("textarea:focus")) return;
-    menu.querySelector(".search").focus();
-  })
-
-  localStorage.setItem("helium-navigator-history", JSON.stringify({ entries: [], index: -1 }));
-
-  menu.addEventListener("pointerup", (e) => { if (e.target === menu && settings.outside_closes_menu && !document.querySelector("input:focus")) toggleMenu("close"); });
-  menu.querySelector("#close").addEventListener("click", () => toggleMenu("close"));
+  menu.addEventListener("pointerup", (e) => { if (e.target === menu && settings.outside_closes_menu && !document.querySelector("input:focus")) toggleMenu(false); });
+  menu.querySelector("#close").addEventListener("click", () => toggleMenu(false));
 
   const menuStyle = document.createElement("style");
   menuStyle.innerHTML = fs.readFileSync(path.join(__dirname, "../assets/css/menu.css"), "utf8");
 
-  const styles = document.createElement("style");
-  styles.innerHTML = fs.readFileSync(path.join(__dirname, "../assets/css/styles.css"), "utf8");
-
   document.body.append(menu);
   menu.append(menuStyle);
-  menu.append(styles);
+
+  setupMenu();
+  return menu;
 }
 
 // helpers
 
 let visibleTimer;
 const toggleMenu = (state) => {
-  const menu = document.querySelector(".helium-menu");
-  const isActive = menu.dataset.active === "true";
-  const open = state === "open" ? true : state === "close" ? false : !isActive;
+  let menu = document.querySelector(".helium-menu");
+  const isActive = menu?.dataset.active === "true";
+  const open = state ?? !isActive;
 
   clearTimeout(visibleTimer);
 
@@ -58,12 +43,15 @@ const toggleMenu = (state) => {
 
   if (open) {
     document.exitPointerLock();
-    menu.dataset.visible = "true";
+    if (!menu) {
+      menu = createMenu();
+      void menu.offsetWidth;
+    }
     menu.dataset.active = "true";
-  } else {
+  } else if (menu) {
     menu.dataset.active = "false";
     document.activeElement.blur();
-    visibleTimer = setTimeout(() => (menu.dataset.visible = "false"), delay);
+    visibleTimer = setTimeout(() => menu.remove(), delay);
   }
 
   localStorage.setItem("helium-menu", open);
@@ -113,7 +101,7 @@ const playSound = (sound, requires) => {
   soundCache[sound] ??= ipcRenderer.sendSync("get-sound", sound);
   if (!soundCache[sound]) return
   const audio = new Audio(soundCache[sound]);
-  audio.volume = Math.min(1, Math.max(0, (settings.ui_sounds_volume ?? 100) / 100));
+  audio.volume = Math.min(1, Math.max(0, settings.ui_sounds_volume / 100));
   audio.play()
 };
 
@@ -139,7 +127,7 @@ const updateRestartButton = () => {
 
 // handlers
 
-const handleUpdateAvailable = () => {
+const handleUpdateAvailable = (updateInfo) => {
   const update = document.querySelector(".menu .update");
   update.classList.add("available");
   update.dataset.title = "Update available!";
@@ -156,10 +144,10 @@ const handleUpdateAvailable = () => {
         <div class="wrapper content">
           <div class="changelog">
             <div class="wrapper spaced">
-              <span>Helium v${version} -> v${updateInfo.version}</span>
-              <span id="date">Released on: ${new Date(updateInfo.releaseDate).toLocaleDateString()}</span>
+              <span>Helium v${version} -> v${updateInfo?.version}</span>
+              <span id="date">Released on: ${new Date(updateInfo?.releaseDate).toLocaleDateString()}</span>
             </div>
-            <div class="details">${(Array.isArray(updateInfo.releaseNotes) ? updateInfo.releaseNotes : String(updateInfo.releaseNotes ?? "").split("\n")).map(l => l.trim().replace(/^[-*]\s+/, "")).filter(Boolean).map(l => `<div class="change">${l}</div>`).join("")}</div>
+            <div class="details">${(Array.isArray(updateInfo?.releaseNotes) ? updateInfo?.releaseNotes : String(updateInfo?.releaseNotes ?? "").split("\n")).map(l => l.trim().replace(/^[-*]\s+/, "")).filter(Boolean).map(l => `<div class="change">${l}</div>`).join("")}</div>
           </div>
         </div>
         <div class="wrapper spaced footer">
@@ -169,7 +157,7 @@ const handleUpdateAvailable = () => {
               Cancel
             </div>
             <div class="wrapper button filled confirm" id="install">
-              Install v${updateInfo.version}
+              Install v${updateInfo?.version}
             </div>
           </div>
         </div>
@@ -190,7 +178,7 @@ const handleUpdateAvailable = () => {
           document.body.append(style);
 
           window.addEventListener("keydown", (e) => {
-            if (!modal2.dataset.installing) return;
+            if (!document.querySelector("#do-not-close")) return;
             e.stopImmediatePropagation();
             e.preventDefault();
           }, true)
@@ -204,7 +192,6 @@ const handleUpdateAvailable = () => {
             <span id="info">The Client will automatically restart once the download is complete</span>
           `
 
-          modal2.dataset.installing = "true";
           ipcRenderer.send("download-update");
         })
       })
@@ -212,24 +199,11 @@ const handleUpdateAvailable = () => {
   })
 }
 
-const handleKeybinds = () => {
-  document.querySelectorAll(".menu .keybind").forEach((keybind) => {
-    const setting = keybind.dataset.setting
-    keybind.textContent = settings[setting];
-    keybind.addEventListener("click", () => {
-      if (document.querySelector(".keybind.active")) return;
-      keybind.classList.add("active");
-      keybind.textContent = "Press a key..."
-      document.addEventListener("keydown", (e) => {
-        e.preventDefault();
-        const newKey = e.code;
-        keybind.textContent = newKey;
-        ipcRenderer.send("update-setting", setting, newKey)
-        settings = ipcRenderer.sendSync("get-settings");
-        keybind.classList.remove("active");
-        document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting, newKey } }));
-      }, { once: true })
-    })
+const handleHotkeys = () => {
+  document.addEventListener("keydown", (e) => {
+    const menu = document.querySelector(".helium-menu");
+    if (!menu || menu.dataset.active !== "true" || e.code === settings.menu_keybind || !settings.instant_search || document.querySelector("input:focus") || document.querySelector("textarea:focus")) return;
+    menu.querySelector(".search").focus();
   })
 
   document.addEventListener("keydown", async (e) => {
@@ -280,6 +254,52 @@ const handleKeybinds = () => {
   });
 }
 
+const handleKeybinds = () => {
+  document.querySelectorAll(".menu .keybind").forEach((keybind) => {
+    const setting = keybind.dataset.setting
+    keybind.textContent = settings[setting];
+    keybind.addEventListener("click", () => {
+      if (document.querySelector(".keybind.active")) return;
+      keybind.classList.add("active");
+      keybind.textContent = "Press a key..."
+      document.addEventListener("keydown", (e) => {
+        e.preventDefault();
+        const newKey = e.code;
+        keybind.textContent = newKey;
+        ipcRenderer.send("update-setting", setting, newKey)
+        settings = ipcRenderer.sendSync("get-settings");
+        keybind.classList.remove("active");
+        document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting, newKey } }));
+      }, { once: true })
+    })
+  })
+}
+
+const handleMenuWeaponInputChange = (input) => {
+  const active = document.querySelector(".weapon.active").dataset.weapon;
+  const setting = `${active}-${input.dataset.weaponSetting}`;
+  const type = input.type;
+
+  const value = type === "checkbox" ? input.checked
+    : type === "range" || type === "number" ? Number(input.value)
+      : input.value;
+
+  settings[setting] = value;
+
+  const update = () => {
+    const min = +input.min || 0;
+    const max = +input.max || 100;
+    const val = +input.value;
+    const pct = ((val - min) / (max - min)) * 100;
+    input.style.setProperty("--v", pct);
+  };
+  update()
+
+  playSound("button", "click_sounds");
+  ipcRenderer.send("update-setting", setting, value);
+  document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting, value } }));
+}
+
 const handleMenuInputChange = (input, commit = true) => {
   const setting = input.dataset.setting;
   const type = input.type;
@@ -313,6 +333,16 @@ const handleMenuInputChanges = () => {
   const textInputs = document.querySelectorAll(".menu input[data-setting][type='text'], .menu textarea[data-setting]");
   textInputs.forEach((el) => {
     el.addEventListener("change", () => handleMenuInputChange(el));
+  });
+
+  const weaponInputs = document.querySelectorAll(".menu input[data-weapon-setting]:not([type='text'])");
+  weaponInputs.forEach((input) => {
+    input.addEventListener("input", () => handleMenuWeaponInputChange(input));
+  });
+
+  const weaponTextInputs = document.querySelectorAll(".menu input[data-weapon-setting][type='text']");
+  weaponTextInputs.forEach((el) => {
+    el.addEventListener("change", () => handleMenuWeaponInputChange(el));
   });
 };
 
@@ -476,12 +506,45 @@ const handleDropdowns = () => {
 
   document.querySelectorAll(".menu .dropdown").forEach(d => {
     const top = d.querySelector(".top");
-    const apply = (open) => {
+
+    const apply = (open, instant) => {
       d.classList.toggle("active", open);
-      [...d.children].forEach(c => c !== top && (c.style.display = open ? "flex" : "none"));
+      d._open = open;
+
+      [...d.children].forEach((c, i) => {
+        const delay = Math.max(0, (i - 1) * 40);
+
+        if (instant) {
+          if (c === top) return;
+          c.classList.remove("gone", "open");
+          c.style.display = open ? "flex" : "none";
+          return;
+        }
+
+        if (open) {
+          setTimeout(() => {
+            if (d._open !== open) return;
+            c.classList.remove("gone");
+            if (c !== top) c.style.display = "flex";
+            c.classList.add("open");
+            setTimeout(() => c.classList.remove("open"), 10);
+          }, delay);
+        } else {
+          if (c === top) return;
+          setTimeout(() => {
+            if (d._open !== open) return;
+            c.classList.add("open");
+            setTimeout(() => {
+              if (d._open !== open) return;
+              c.style.display = "none";
+              c.classList.remove("open");
+            }, 200);
+          }, delay);
+        }
+      });
     };
 
-    apply(state[d.id] ?? true);
+    apply(state[d.id] ?? true, true);
     top.addEventListener("click", () => {
       apply(state[d.id] = !d.classList.contains("active"));
       localStorage.setItem("helium-dropdowns", JSON.stringify(state));
@@ -496,16 +559,10 @@ const handleThemes = () => document.querySelectorAll(".menu .theme:not(.disabled
     theme.classList.add("active");
     playSound("interface", "click_sounds");
   })
-
-  const updateAccentColor = () => document.querySelector(".helium-menu").style.setProperty("--accent", hexToRgb(settings.accent_color))
-  updateAccentColor();
-
-  document.addEventListener("helium-settings-changed", (e) => {
-    if (e.detail.setting === "accent_color") updateAccentColor();
-  })
 })
 
 const handleNavbar = () => {
+  const menu = document.querySelector(".helium-menu");
   let active = document.querySelector(".menu .tab.active").textContent.trim();
   const noResults = document.querySelector(".menu .no-results");
 
@@ -552,7 +609,7 @@ const handleNavbar = () => {
     checkForResults();
   });
 
-  document.addEventListener("helium-tab-changed", () => {
+  menu.addEventListener("helium-tab-changed", () => {
     updateNavbar();
     checkForResults();
   });
@@ -585,7 +642,51 @@ handleTabChange = (tab, hideFade) => {
   fadeTo.classList.add("active");
   if (!hideFade) startFade(fadeTo, "fade-in");
 
-  document.dispatchEvent(new Event("helium-tab-changed"));
+  switch (tabName) {
+    case "weapons":
+      setTimeout(() => {
+        localStorage.getItem("helium-active-weapon") ? handleWeaponChange(document.querySelector(`[data-weapon="${localStorage.getItem("helium-active-weapon")}"]`), true)
+          : handleWeaponChange(document.querySelector(".menu .weapon"));
+      }, 0);
+      break;
+  }
+
+  document.querySelector(".helium-menu").dispatchEvent(new Event("helium-tab-changed", { bubbles: true }));
+}
+
+const handleWeapons = () => {
+  document.querySelectorAll(".menu .weapon").forEach((tab) => tab.addEventListener("click", () => {
+    handleWeaponChange(tab)
+    playSound("button", "click_sounds");
+  }))
+}
+
+handleWeaponChange = (tab) => {
+  const tabName = tab.dataset.weapon;
+  document.querySelector(".menu .weapon.active").classList.remove("active");
+  tab.classList.add("active");
+  localStorage.setItem("helium-active-weapon", tabName);
+
+  const title = document.querySelector(".menu .title");
+  title.innerHTML = `Weapon Mods <span style="color:gray; font-size:0.8em;">> ${tab.id}</span>`
+
+  const weaponName = document.querySelector(".weapon-name");
+  weaponName.textContent = tab.id;
+
+  document.querySelectorAll("input[data-weapon-setting]").forEach((input) => {
+    const setting = input.dataset.weaponSetting;
+    input.value = settings[`${tabName}-${setting}`] ?? settings[setting];
+    input.dispatchEvent(new Event("update"));
+
+    const update = () => {
+      const min = +input.min || 0;
+      const max = +input.max || 100;
+      const val = +input.value;
+      const pct = ((val - min) / (max - min)) * 100;
+      input.style.setProperty("--v", pct);
+    };
+    update();
+  })
 }
 
 const updateDependent = (option) => {
@@ -599,7 +700,9 @@ const updateDependent = (option) => {
   const value = option.dataset.value;
   if (!value) return;
   option.classList.remove("disabled");
-  if (settings[dependency] !== value || (ddd && !settings[ddd])) option.classList.add("disabled");
+  const isBool = value === "true" || value === "false";
+  const expected = isBool ? value === "true" : value;
+  if (settings[dependency] !== expected || (ddd && !settings[ddd])) option.classList.add("disabled");
 }
 
 const updateDependents = () => document.querySelectorAll(".menu .option[data-requires]").forEach((dependent) => {
@@ -611,6 +714,9 @@ const handleLinkedInputs = () => {
   document.querySelectorAll(".menu input[data-setting]").forEach((input) => {
     (groups[input.dataset.setting] ??= []).push(input);
   });
+  document.querySelectorAll(".menu input[data-weapon-setting]").forEach((input) => {
+    (groups[input.dataset.weaponSetting] ??= []).push(input);
+  });
 
   Object.entries(groups).forEach(([setting, inputs]) => {
     if (inputs.length < 2) return;
@@ -618,8 +724,7 @@ const handleLinkedInputs = () => {
       input.addEventListener("input", () => {
         inputs.forEach((other) => {
           if (other === input) return;
-          if (input.type === "checkbox") other.checked = input.checked;
-          else other.value = input.value;
+          other.value = input.value;
         });
       });
     });
@@ -643,6 +748,21 @@ const syncAllCSS = () => {
     }
   });
 };
+
+const getCSSStyle = (rawCSS) => {
+  let style = document.getElementById(`user-css-${rawCSS}`);
+  if (style) return style;
+
+  style = document.createElement("style");
+  style.id = `user-css-${rawCSS}`
+  document.head.append(style);
+
+  const states = JSON.parse(localStorage.getItem("helium-css-states") || "{}");
+  if (states[rawCSS] && settings.enable_css) {
+    style.textContent = fs.readFileSync(path.join(ipcRenderer.sendSync("get-css-path"), rawCSS), "utf-8");
+  }
+  return style;
+}
 
 const addCSS = (rawCSS) => {
   const cssList = document.querySelector(".menu #css-list");
@@ -682,9 +802,7 @@ const addCSS = (rawCSS) => {
 
   // apply css
 
-  const style = document.createElement("style");
-  style.id = `user-css-${rawCSS}`
-  document.head.append(style);
+  const style = getCSSStyle(rawCSS);
 
   // buttons
 
@@ -699,11 +817,15 @@ const addCSS = (rawCSS) => {
   deleteCSS.addEventListener("click", () => {
     try {
       fs.unlinkSync(cssPath);
-      css.remove();
-      style.remove();
+      css.classList.add("gone");
       const states = JSON.parse(localStorage.getItem("helium-css-states") || "{}");
       delete states[rawCSS];
       localStorage.setItem("helium-css-states", JSON.stringify(states));
+
+      setTimeout(() => {
+        css.remove();
+        style.remove();
+      }, 200)
     } catch (err) {
       alert(`failed to delete css: ${err}`)
     }
@@ -761,10 +883,7 @@ const addCSS = (rawCSS) => {
   checkbox.dataset.rawCss = rawCSS;
 
   const savedStates = JSON.parse(localStorage.getItem("helium-css-states") || "{}");
-  if (savedStates[rawCSS] && settings.enable_css) {
-    checkbox.checked = true;
-    style.textContent = fs.readFileSync(cssPath, "utf-8");
-  }
+  if (savedStates[rawCSS] && settings.enable_css) checkbox.checked = true;
 
   checkbox.addEventListener("change", () => {
     playSound("button", "click_sounds")
@@ -786,6 +905,14 @@ const addCSS = (rawCSS) => {
 }
 
 const handleCSS = () => {
+  const cssList = fs.readdirSync(ipcRenderer.sendSync("get-css-path"));
+  cssList.forEach((css) => {
+    if (!css.endsWith(".css")) return;
+    getCSSStyle(css);
+  });
+}
+
+const handleCSSList = () => {
   const cssList = fs.readdirSync(ipcRenderer.sendSync("get-css-path"));
   cssList.forEach((css) => {
     if (!css.endsWith(".css")) return;
@@ -832,12 +959,12 @@ const handleTooltips = () => {
 
 //
 
-const initMenu = (updateAvailable, info) => {
-  createMenu(updateAvailable, info);
+const setupMenu = () => {
   handleKeybinds();
   updateRestartButton();
   handleConfirmations();
   handleTabs();
+  handleWeapons();
   handleNavbar();
   handleButtons();
   handleDropdowns();
@@ -846,7 +973,7 @@ const initMenu = (updateAvailable, info) => {
   handleMenuSelectChanges();
   updateDependents();
   handleLinkedInputs();
-  handleCSS();
+  handleCSSList();
   handleDefaults();
   handleTooltips();
 
@@ -866,6 +993,19 @@ const initMenu = (updateAvailable, info) => {
     } else {
       input.value = value;
     }
+
+    if (type === "range") {
+      const update = () => {
+        const min = +input.min || 0;
+        const max = +input.max || 100;
+        const val = +input.value;
+        const pct = ((val - min) / (max - min)) * 100;
+        input.style.setProperty("--v", pct);
+      };
+
+      input.addEventListener("input", update);
+      update();
+    }
   });
 
   selects.forEach((select) => {
@@ -883,8 +1023,25 @@ const initMenu = (updateAvailable, info) => {
   localStorage.getItem("helium-active-tab") ? handleTabChange(document.querySelector(`[data-tab="${localStorage.getItem("helium-active-tab")}"]`), true)
     : handleTabChange(document.querySelector(".menu .tab"));
 
+  if (updateInfo) handleUpdateAvailable(updateInfo);
+}
+
+const initMenu = (updateAvailable, info) => {
+  localStorage.setItem("helium-navigator-history", JSON.stringify({ entries: [], index: -1 }));
+  handleHotkeys();
+  handleCSS();
+
+  if (updateAvailable && info) {
+    updateInfo = info;
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent("custom-notification", { detail: { message: "An Update is available! Click here to open the Installer", onclick: () => { toggleMenu(true); document.querySelector(".helium-menu .update.available").dispatchEvent(new Event("click")) } } }))
+    }, 0)
+  };
 
   document.addEventListener("helium-settings-changed", (e) => {
+    const menu = document.querySelector(".helium-menu");
+    if (!menu) return;
+
     const { setting, value } = e.detail;
     updateDependents();
     switch (setting) {
@@ -900,6 +1057,10 @@ const initMenu = (updateAvailable, info) => {
         syncAllCSS();
         break;
 
+      case "accent_color":
+        menu.style.setProperty("--accent", hexToRgb(settings.accent_color));
+        break;
+
       case "menu_keybind":
         const reminder = document.querySelector("#helium-keybind-reminder");
         console.log(reminder)
@@ -907,6 +1068,8 @@ const initMenu = (updateAvailable, info) => {
         break;
     }
   });
+
+  if (localStorage.getItem("helium-menu") === "true") toggleMenu(true);
 }
 
 module.exports = { initMenu };

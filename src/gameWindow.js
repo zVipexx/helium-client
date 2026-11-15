@@ -122,6 +122,11 @@ ipcMain.on("update-setting", (e, key, value) => {
   store.set("settings", settings);
 });
 
+ipcMain.on("update-settings-batch", (e, payload) => {
+  Object.assign(settings, payload);
+  store.set("settings", settings);
+});
+
 ipcMain.on("get-scripts-path", (e) => {
   e.returnValue = scriptsPath;
 });

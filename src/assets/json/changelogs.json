@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.1.2-beta",
+    "date": "/11/2026",
+    "changelogs": [
+      "Added Weapon Mods (offset, scale etc.)",
+      "Noticeable performance increase",
+      "Fixed visual bug in Auto Updater"
+    ]
+  },
+  {
     "version": "0.1.1-beta",
     "date": "13/11/2026",
     "changelogs": [

@@ -1,4 +1,6 @@
 <div align="center">
+
+# [CLICK HERE FOR LATEST DOWNLOAD](https://github.com/zVipexx/helium-client/releases/latest)
   
 <img src="https://i.imgur.com/ga4CbjS.png" width="128" height="128" />
 <br />
