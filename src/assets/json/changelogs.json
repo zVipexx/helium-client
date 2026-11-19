@@ -5,6 +5,7 @@
     "changelogs": [
       "Added Weapon Mods (offset, scale etc.)",
       "Added customizable inspects",
+      "Added export, import and reset settings",
       "Fixed Discord Login",
       "Fixed visual bug in Auto Updater",
       "Noticeable performance increase"
