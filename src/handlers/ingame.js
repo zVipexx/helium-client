@@ -180,8 +180,8 @@ const handleIngame = () => {
   const chat = document.querySelector("#chat .messages-cont");
   if (chat) {
     new MutationObserver(() => {
-      const text = chat.querySelector(".message:last-child").querySelector(".text").textContent;
-      if (text.includes("reset the match.")) {
+      const text = chat.querySelector(".message:last-child").querySelector(".text");
+      if ((text.classList.contains("STATUS") && text.textContent.includes("reset the match.")) || (text.classList.contains("SERVER") && text.textContent.includes("GO!"))) {
         assistsCount = 0;
         headshotsCount = 0;
 

@@ -1,0 +1,85 @@
+[
+  {
+    "vita": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.3, "ease": "easeOut" }, { "t": 0.85, "v": -0.3 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -6.283185307179586 }]
+      }
+    },
+    "scar": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.15, "ease": "easeOut" }, { "t": 0.85, "v": -0.15 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.2, "ease": "easeOut" }, { "t": 0.85, "v": -0.2 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -6.283185307179586 }]
+      }
+    },
+    "revolver": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.5, "v": 0.02, "ease": "easeOut" }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetY": [{ "t": 0, "v": 0 }, { "t": 0.5, "v": 0.15, "ease": "easeOut" }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "scale": [{ "t": 0, "v": 1 }, { "t": 0.5, "v": 1.05, "ease": "easeOut" }, { "t": 1, "v": 1, "ease": "easeIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": 6.283185307179586, "ease": "easeOutPow" }]
+      }
+    },
+    "ar9": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.15, "ease": "easeOut" }, { "t": 0.85, "v": -0.15 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.2, "ease": "easeOut" }, { "t": 0.85, "v": -0.2 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinY": [{ "t": 0, "v": 0 }, { "t": 1, "v": 6.283185307179586 }]
+      }
+    },
+    "mac10": {
+      "1": {
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.1, "v": -0.25, "ease": "easeOut" }, { "t": 0.5, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": 25.132741228718345, "ease": "easeOutPow" }]
+      }
+    },
+    "m60": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.15, "ease": "easeOut" }, { "t": 0.85, "v": -0.15 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.2, "ease": "easeOut" }, { "t": 0.85, "v": -0.2 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -6.283185307179586 }]
+      }
+    },
+    "lar": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.15, "ease": "easeOut" }, { "t": 0.85, "v": -0.15 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.2, "ease": "easeOut" }, { "t": 0.85, "v": -0.2 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -6.283185307179586 }]
+      }
+    },
+    "weatie": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.15, "ease": "easeOut" }, { "t": 0.85, "v": -0.15 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetZ": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.2, "ease": "easeOut" }, { "t": 0.85, "v": -0.2 }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 0.35, "v": -0.25, "ease": "easeOut" }, { "t": 0.85, "v": -0.25 }, { "t": 1, "v": 0, "ease": "easeOutIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -6.283185307179586 }]
+      }
+    },
+    "shark": {
+      "1": {
+        "offsetX": [{ "t": 0, "v": 0 }, { "t": 0.5, "v": 0.04, "ease": "easeOut" }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "offsetY": [{ "t": 0, "v": 0 }, { "t": 0.5, "v": 0.2, "ease": "easeOut" }, { "t": 1, "v": 0, "ease": "easeIn" }],
+        "scale": [{ "t": 0, "v": 1 }, { "t": 0.5, "v": 1.08, "ease": "easeOut" }, { "t": 1, "v": 1, "ease": "easeIn" }],
+        "spinX": [{ "t": 0, "v": 0 }, { "t": 1, "v": 6.283185307179586, "ease": "easeOutPow" }]
+      }
+    },
+    "bayonet": {
+      "1": {
+        "scale": [{ "t": 0, "v": 1 }, { "t": 0.5, "v": 1.1, "ease": "easeOut" }, { "t": 1, "v": 1, "ease": "easeIn" }],
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": 31.41592653589793, "ease": "easeOutPow" }]
+      }
+    },
+    "tomahawk": {
+      "1": {
+        "spinZ": [{ "t": 0, "v": 0 }, { "t": 1, "v": -12.566370614359172, "ease": "easeOutPow" }]
+      }
+    }
+  }
+]

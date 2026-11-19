@@ -95,6 +95,7 @@
   pointer-events: none;
   transform: translateZ(0);
   contain: paint;
+  zoom: var(--zoom);
 }
 
 .helium-menu[data-active="true"] {
@@ -259,6 +260,7 @@
 .helium-menu .keybind.active {
   border: 2px dotted rgb(var(--text-inactive));
   color: rgb(var(--text));
+  pointer-events: none;
 }
 
 .helium-menu .clear-keybind {
@@ -274,7 +276,7 @@
   border-right: 1px solid rgb(var(--border));
 }
 
-.helium-menu .sidebar::after {
+.helium-menu .sidebar:after {
   content: "";
   position: absolute;
   width: 100%;
@@ -388,16 +390,58 @@
   font-size: 12px;
 }
 
+.helium-menu .footer #more-options {
+  color: rgb(var(--text-inactive));
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.helium-menu .footer #more-options:hover {
+  color: rgb(var(--text));
+}
+
+.helium-menu .footer .more-options {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 4.7rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  color: rgb(var(--text-inactive));
+  align-items: flex-end;
+}
+
+.helium-menu .footer .more-options div {
+  padding: 0.2rem;
+  border-radius: 4px;
+  width: fit-content;
+  cursor: pointer;
+  pointer-events: none;
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out, color 0.15s;
+  transform: translateX(6px);
+  opacity: 0;
+}
+
+.helium-menu .footer .more-options div.active {
+  pointer-events: auto;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.helium-menu .footer .more-options div:hover {
+  color: rgb(var(--text));
+}
+
 .helium-menu .update {
   margin-left: auto;
-  opacity: 0.5;
+  color: rgb(var(--text-inactive));
   padding: 0.25rem;
   border-radius: 4px;
 }
 
 .helium-menu .update.available {
   animation: 1.3s notice infinite ease alternate-reverse;
-  opacity: 1;
+  color: rgb(var(--text));
   cursor: pointer;
 }
 
@@ -479,6 +523,10 @@
   position: relative;
 }
 
+.helium-menu .wrapper[data-requires] {
+  transition: 0.2s;
+}
+
 .helium-menu .wrapper.column {
   flex-direction: column !important;
 }
@@ -507,8 +555,8 @@
   transform: translateY(-1px)
 }
 
-.helium-menu .wrapper.valid::before,
-.helium-menu .wrapper.invalid::before {
+.helium-menu .wrapper.valid:before,
+.helium-menu .wrapper.invalid:before {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -516,14 +564,14 @@
   font-weight: bold;
 }
 
-.helium-menu .wrapper.valid::before {
+.helium-menu .wrapper.valid:before {
   content: "";
   width: 1rem;
   height: 1rem;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234caf50' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-.helium-menu .wrapper.invalid::before {
+.helium-menu .wrapper.invalid:before {
   content: "";
   width: 1rem;
   height: 1rem;
@@ -537,6 +585,17 @@
 .helium-menu .wrapper.button:not(.confirm):hover:active {
   opacity: 0.7;
   transform: translateY(2px);
+}
+
+.helium-menu .wrapper.experimental span:not(.description):after {
+  content: "EXPERIMENTAL";
+  font-weight: 600;
+  font-size: 0.75em;
+  margin-left: 0.5rem;
+  color: rgb(160, 185, 145);
+  background: rgb(160, 185, 145, 0.1);
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
 }
 
 .helium-menu .title {
@@ -799,27 +858,28 @@
 .helium-menu .checkbox label:after {
   content: "";
   position: absolute;
-  top: 0.125rem;
+  top: 40%;
   left: 0.125rem;
   width: 1rem;
   height: 1rem;
-  transform: scale(0.75);
+  transform: scale(0.75) translate(0, -50%);
   background: rgb(var(--text-inactive));
   border-radius: 50%;
-  transition: transform 0.3s cubic-bezier(0.34, 1.6, 0.64, 1), background 0.3s;
+  transition: transform 0.3s cubic-bezier(0.34, 1.6, 0.64, 1), background 0.3s, top 0.3s;
 }
 
 .helium-menu .checkbox:active input:checked+label:after {
-  transform: scale(1.25) translateX(1.2rem);
+  transform: scale(1.25) translate(1.2rem, -40%);
 }
 
 .helium-menu .checkbox:active label:after {
-  transform: scale(1.25);
+  transform: scale(1.25) translate(0, -30%);
 }
 
 .helium-menu .checkbox input:checked+label:after {
-  transform: scale(1) translateX(1.5rem);
+  transform: scale(1) translate(1.5rem, -50%);
   background: white;
+  top: 50%;
 }
 
 .helium-menu .checkbox label:before {
@@ -844,7 +904,7 @@
   height: 12px;
 }
 
-.menu input[type="range"]::before {
+.menu input[type="range"]:before {
   content: "";
   position: absolute;
   top: 50%;
@@ -855,7 +915,7 @@
   width: max(0px, calc((100% - 4px) * var(--v) / 100 + 4px / 2 - 6px));
 }
 
-.menu input[type="range"]::after {
+.menu input[type="range"]:after {
   content: "";
   position: absolute;
   top: 50%;
@@ -915,7 +975,7 @@
   transition: transform 0.2s;
 }
 
-.helium-menu .confirm::after {
+.helium-menu .confirm:after {
   content: "";
   position: absolute;
   top: -3px;
@@ -933,13 +993,13 @@
   transition: --confirm-p 0.2s ease-out, opacity 0.15s;
 }
 
-.helium-menu .confirm.holding::after {
+.helium-menu .confirm.holding:after {
   --confirm-p: 360deg;
   opacity: 1;
   transition: --confirm-p 1s linear, opacity 0.1s;
 }
 
-.helium-menu .confirm.confirmed::after {
+.helium-menu .confirm.confirmed:after {
   --confirm-p: 360deg;
   background: conic-gradient(rgb(130, 255, 0, .7) var(--confirm-p), transparent 0);
   opacity: 1;
@@ -975,7 +1035,7 @@
   color: white;
   flex-direction: column;
   padding: 1rem;
-  gap: 1rem;
+  /* gap: 1rem; */
   border-radius: 12px;
   border: 2px solid rgb(var(--border));
   transition: 0.2s;
@@ -997,8 +1057,13 @@
   width: 640px;
 }
 
+.helium-menu .helium-modal>*:not(:first-child) {
+  border-top: 2px solid rgb(var(--border));
+}
+
 .helium-menu .helium-modal .header {
   padding: 0;
+  color: rgb(var(--text));
 }
 
 .helium-menu .helium-modal>.wrapper {
@@ -1006,14 +1071,13 @@
 }
 
 .helium-menu .helium-modal .content {
-  border-top: 2px solid rgb(var(--border));
   padding: 0 !important;
   gap: 0 !important;
   justify-content: flex-start !important;
   background: rgb(22, 24, 28);
 }
 
-.helium-menu #update-modal .footer span {
+.helium-menu .helium-modal .footer span {
   color: rgb(178, 120, 62);
   font-size: 0.9em;
 }
@@ -1042,7 +1106,11 @@
   width: 530px;
 }
 
-.helium-menu #update-installing-modal #info {
+.helium-menu #update-installing-modal>* {
+  border-top: none;
+}
+
+.helium-menu .helium-modal #info {
   color: rgb(var(--text));
   text-align: center;
   white-space: pre-line;
@@ -1054,6 +1122,7 @@
   background: linear-gradient(90deg, rgb(var(--accent)) 0%, transparent 0%);
   border-radius: 16px;
   position: relative;
+  margin: 1rem 0;
 }
 
 .helium-menu #update-installing-modal .progress:after {
@@ -1138,11 +1207,12 @@
   display: grid;
   grid-template-columns: 1fr 6fr;
   gap: 1.5rem;
+  overflow: visible;
 }
 
 .helium-menu .weapons {
   display: grid;
-  grid-template-rows: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 50px);
   gap: 0.5rem;
 }
 
@@ -1160,7 +1230,7 @@
   cursor: pointer;
 }
 
-.helium-menu .weapon::before {
+.helium-menu .weapon:before {
   content: "";
   position: absolute;
   width: 100%;
@@ -1183,7 +1253,7 @@
   transition: background-size 0.2s ease;
 }
 
-.helium-menu .weapon.active::before {
+.helium-menu .weapon.active:before {
   background-size:
     50% 2px,
     50% 2px,
@@ -1225,6 +1295,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow-y: scroll;
 }
 
 .helium-menu .weapon-content,
@@ -1239,8 +1310,8 @@
   border-radius: 0;
 }
 
-.helium-menu #reset-global::after,
-.helium-menu #reset-weapon::after {
+.helium-menu #reset-global:after,
+.helium-menu #reset-weapon:after {
   border-radius: 0;
 }
 
@@ -1249,7 +1320,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: 0s;
 }
 
 .helium-menu .weapon-offset span,

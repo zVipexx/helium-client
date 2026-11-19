@@ -125,7 +125,9 @@ const handleCreate = () => {
     const preset = document.createElement("div");
     preset.classList.add("preset");
     preset.innerHTML = `
-      <input type="text" value="${name}">
+      <div class="input">
+        <input type="text" value="${name}">
+      </div>
       <div class="btns">
         <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="load-preset">
           <title>Load</title>
@@ -168,9 +170,12 @@ const handleCreate = () => {
 
       oldName = newName;
     });
-    input.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      presets.scrollBy({ top: e.deltaY, behavior: "smooth" });
+
+    const inputWrapper = preset.querySelector(".input");
+    inputWrapper.addEventListener("click", () => {
+      if (preset.querySelector("input:focus")) return;
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
     });
 
     const loadPreset = preset.querySelector("#load-preset");

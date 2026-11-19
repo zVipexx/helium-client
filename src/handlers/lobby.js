@@ -3,14 +3,10 @@ const { ipcRenderer } = require("electron");
 const settings = ipcRenderer.sendSync("get-settings");
 
 const handleLobby = () => {
-  const menuAvatar = document.querySelector(".menu .footer .avatar");
-  const menuNickname = document.querySelector(".menu .footer .a .nickname");
-
   const updateMenuAvatar = () => {
     const source = document.querySelector(".auth-user .avatar");
     const current = source && source.style.backgroundImage;
-    if (!current || !menuAvatar) return;
-    menuAvatar.style.backgroundImage = current;
+    if (!current) return;
     localStorage.setItem("avatar_cache", current);
   };
   updateMenuAvatar();
@@ -18,8 +14,7 @@ const handleLobby = () => {
   const updateMenuNickname = () => {
     const nick = document.querySelector(".team-section .nickname");
     const current = nick && nick.textContent;
-    if (!current || !menuNickname) return;
-    menuNickname.textContent = current;
+    if (!current) return;
     localStorage.setItem("nickname_cache", current);
   }
   updateMenuNickname();

@@ -1,11 +1,13 @@
 [
   {
     "version": "0.1.2-beta",
-    "date": "/11/2026",
+    "date": "19/11/2026",
     "changelogs": [
       "Added Weapon Mods (offset, scale etc.)",
-      "Noticeable performance increase",
-      "Fixed visual bug in Auto Updater"
+      "Added customizable inspects",
+      "Fixed Discord Login",
+      "Fixed visual bug in Auto Updater",
+      "Noticeable performance increase"
     ]
   },
   {

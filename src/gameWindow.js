@@ -13,7 +13,7 @@ autoUpdater.autoDownload = false;
 const store = new Store();
 if (!store.has("settings")) store.set("settings", default_settings);
 
-const settings = store.get("settings");
+let settings = store.get("settings");
 
 for (const key in default_settings) {
   if (!settings.hasOwnProperty(key) || typeof settings[key] !== typeof default_settings[key]) {
@@ -24,9 +24,8 @@ for (const key in default_settings) {
 
 applySwitches(settings);
 
-const SWAP_SCHEME = "helium-swap";
 protocol.registerSchemesAsPrivileged([
-  { scheme: SWAP_SCHEME, privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, bypassCSP: true } },
+  { scheme: "helium-swap", privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, bypassCSP: true } },
 ]);
 
 let gameWindow = "";
@@ -37,7 +36,6 @@ const createWindow = () => {
     title: "Helium Client",
     width: 1280,
     height: 720,
-    show: false,
     backgroundColor: "#141414",
     webPreferences: {
       nodeIntegration: true,
@@ -111,6 +109,12 @@ if (!fs.existsSync(cssPath)) {
   fs.mkdirSync(cssPath, { recursive: true });
 }
 
+const inspectsPath = path.join(app.getPath("documents"), "HeliumClient", "inspects.json");
+if (!fs.existsSync(inspectsPath)) {
+  fs.mkdirSync(path.dirname(inspectsPath), { recursive: true });
+  fs.copyFileSync(path.join(__dirname, "util", "defaultinspects.json"), inspectsPath);
+}
+
 // handlers
 
 ipcMain.on("get-settings", (e) => {
@@ -122,9 +126,15 @@ ipcMain.on("update-setting", (e, key, value) => {
   store.set("settings", settings);
 });
 
-ipcMain.on("update-settings-batch", (e, payload) => {
-  Object.assign(settings, payload);
+ipcMain.on("delete-setting", (e, key) => {
+  delete settings[key];
   store.set("settings", settings);
+})
+
+ipcMain.on("reset-settings", (e) => {
+  settings = JSON.parse(JSON.stringify(default_settings));
+  store.set("settings", settings);
+  e.returnValue = JSON.parse(JSON.stringify(settings));
 });
 
 ipcMain.on("get-scripts-path", (e) => {
@@ -133,6 +143,10 @@ ipcMain.on("get-scripts-path", (e) => {
 
 ipcMain.on("get-css-path", (e) => {
   e.returnValue = cssPath;
+});
+
+ipcMain.on("get-inspects-path", (e) => {
+  e.returnValue = inspectsPath;
 });
 
 ipcMain.on("open", (e, url) => {
@@ -198,7 +212,7 @@ const resolveSwap = (pathname) => {
 }
 
 const initSwapper = () => {
-  protocol.registerFileProtocol(SWAP_SCHEME, (request, callback) => {
+  protocol.registerFileProtocol("helium-swap", (request, callback) => {
     const file = resolveSwap(new URL(request.url).pathname);
     if (file) callback({ path: file });
     else callback({ error: -6 });
@@ -210,7 +224,7 @@ const initSwapper = () => {
       if (details.method !== "GET") return callback({});
       const { hostname, pathname } = new URL(details.url);
       if (pathname.startsWith("/assets/glb/")) return callback({});
-      if (resolveSwap(pathname)) return callback({ redirectURL: `${SWAP_SCHEME}://${hostname}${pathname}` });
+      if (resolveSwap(pathname)) return callback({ redirectURL: `helium-swap://${hostname}${pathname}` });
       callback({});
     }
   );
@@ -218,6 +232,8 @@ const initSwapper = () => {
 
 // game init
 const initGame = () => {
+  session.defaultSession.preconnect({ url: "https://kirka.io", numSockets: 2 });
+
   protocol.registerFileProtocol("file", (request, callback) => {
     callback(decodeURIComponent(request.url.replace("file:///", "")));
   });

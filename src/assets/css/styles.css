@@ -266,6 +266,11 @@
   margin-bottom: -52px;
 }
 
+#room-presets .preset .input {
+  cursor: text;
+  display: flex;
+}
+
 #room-presets .preset input {
   background: none;
   outline: none;
@@ -276,6 +281,10 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, .4), inset 0 0 8px rgba(0, 0, 0, .4);
   border-radius: 4px;
   padding-left: 0.3em;
+}
+
+#room-presets .preset input:not(:focus) {
+  pointer-events: none;
 }
 
 #room-presets .preset .btns {

@@ -154,10 +154,13 @@ const handleProfile = () => {
   }
   applyProfileChanges();
 
+  let pendingWait = null;
   document.querySelector(".tab-header").addEventListener("click", (e) => {
-    if (!e.target.classList.contains("tab") || /trophies|skins|maps|modes/.test(e.target.textContent)) return;
-    waitForElement(".card.statistics", () => applyProfileChanges());
-  })
+    if (!e.target.classList.contains("tab") || e.target.classList.contains("active") || /trophies|skins|maps|modes/.test(e.target.textContent)) return;
+
+    pendingWait?.cancel();
+    pendingWait = waitForElement(".card.statistics", applyProfileChanges);
+  }, true)
 }
 
 module.exports = { handleProfile }

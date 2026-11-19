@@ -8,24 +8,32 @@ const { handleProfile } = require("../handlers/profile.js");
 const { handleServers } = require("../handlers/servers.js");
 const { handleSettings } = require("../handlers/settings.js");
 const { initCSL } = require("../addons/csl.js");
+const { initWeaponMods } = require("../addons/weaponmods.js");
 const { ipcRenderer } = require("electron");
 const fs = require("fs");
 const path = require("path");
 
 let settings = ipcRenderer.sendSync("get-settings");
 
+// fix discord login
+if (location.hostname.endsWith("discord.com")) delete window.require;
+
 // helpers
 
 window.waitForElement = (selector, callback) => {
+  const start = Date.now();
+  let cancelled = false;
+
   const tryApply = () => {
+    if (cancelled) return;
     const el = document.querySelector(selector);
-    if (el) {
-      callback(el);
-    } else {
-      setTimeout(tryApply, 0);
-    }
+    if (el) return callback(el);
+    if (Date.now() - start > 5000) return;
+    setTimeout(tryApply, 0);
   };
   setTimeout(tryApply, 0);
+
+  return { cancel: () => { cancelled = true; } };
 };
 
 // load user scripts
@@ -75,7 +83,38 @@ window.addEventListener("DOMContentLoaded", async () => {
   console.info = originalConsole.info;
   console.trace = originalConsole.trace;
 
+  if (!location.hostname.startsWith("kirka.io")) {
+    const back = document.createElement("div");
+    back.innerHTML = `
+      <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 12H4M4 12L10 18M4 12L10 6" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      BACK TO KIRKA
+    `
+    back.style = `
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      bottom: 1rem;
+      left: 1rem;
+      padding: 1rem;
+      background: black;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+      font-weight: 600;
+    `
+
+    back.addEventListener("click", () => {
+      window.location.href = "https://kirka.io";
+    })
+
+    document.body.append(back);
+  }
+
   initCSL(settings)
+  initWeaponMods(settings);
 
   const { available, info } = await ipcRenderer.invoke("get-update-details");
   initMenu(available, info);
@@ -140,7 +179,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         styles.push(".kill-death .hsp { display: none; }")
       if (settings.assists_indicator || settings.obj_indicator || settings.hsp_indicator)
         styles.push(".teammates-widget { margin-top: 1.1rem; }")
-      if (settings.colored_killfeed) styles.push(`.desktop-game-interface .kill-bar-item { --red-kill: #FF4D42aa; --blue-kill: #0D6DC6aa }`);
+      if (settings.colored_killfeed) styles.push(`.desktop-game-interface .kill-bar-item { --red-kill: #FF4D42; --blue-kill: #0D6DC6 }`);
       if (!settings.lobby_keybind_reminder) styles.push(`#helium-keybind-reminder { display: none }`);
 
       configurableStyles.innerHTML = styles.join("");
@@ -230,6 +269,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.addEventListener("helium-settings-changed", () => {
     settings = ipcRenderer.sendSync("get-settings");
     initCSL(settings);
+    initWeaponMods(settings);
   })
 
   // site navigation that cant be filtered by url
@@ -282,7 +322,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const handleResize = (_, size) => {
     const zoom = Math.min(size[0] / 1920, size[1] / 1080);
-    // document.querySelector(".helium-menu").style.zoom = Math.abs(zoom - 1) <= 0.01 ? "" : zoom;
+    document.body.style.setProperty("--zoom", Math.abs(zoom - 1) <= 0.01 ? "" : zoom)
   };
   handleResize(null, ipcRenderer.sendSync("get-size"));
   ipcRenderer.on("resize", handleResize);

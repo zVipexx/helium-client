@@ -1,4 +1,4 @@
-// partly ai generated
+// made with the help of ai
 
 const initCSL = (settings) => {
   if (!window.csl_state) {

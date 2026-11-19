@@ -1,6 +1,7 @@
 const { ipcRenderer, clipboard, nativeImage } = require("electron");
 const { default_settings } = require("../util/defaults.json")
 const { version } = require("../../package.json")
+const inspectData = require(ipcRenderer.sendSync("get-inspects-path"))[0];
 const path = require("path");
 const fs = require("fs");
 
@@ -11,12 +12,11 @@ const createMenu = () => {
   const menu = document.createElement("div");
   menu.classList.add("helium-menu");
   menu.dataset.active = "false";
-  menu.dataset.visible = "true";
   menu.dataset.theme = "glass";
   menu.innerHTML = fs.readFileSync(path.join(__dirname, "../assets/html/menu.html"), "utf8");
   menu.style.setProperty("--accent", hexToRgb(settings.accent_color));
 
-  menu.addEventListener("pointerup", (e) => { if (e.target === menu && settings.outside_closes_menu && !document.querySelector("input:focus")) toggleMenu(false); });
+  menu.addEventListener("pointerup", (e) => { if (e.target === menu && settings.outside_closes_menu && !document.querySelector("input:focus") && !document.querySelector("textarea:focus")) toggleMenu(false); });
   menu.querySelector("#close").addEventListener("click", () => toggleMenu(false));
 
   const menuStyle = document.createElement("style");
@@ -262,22 +262,37 @@ const handleKeybinds = () => {
       if (document.querySelector(".keybind.active")) return;
       keybind.classList.add("active");
       keybind.textContent = "Press a key..."
-      document.addEventListener("keydown", (e) => {
+
+      const keyHandler = (e) => {
         e.preventDefault();
-        const newKey = e.code;
+        finish(e.code);
+      };
+
+      const mouseHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        finish(`Mouse${e.button}`);
+      };
+
+      const finish = (newKey) => {
+        document.removeEventListener("keydown", keyHandler);
+        document.removeEventListener("mousedown", mouseHandler, true);
         keybind.textContent = newKey;
         ipcRenderer.send("update-setting", setting, newKey)
         settings = ipcRenderer.sendSync("get-settings");
         keybind.classList.remove("active");
         document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting, newKey } }));
-      }, { once: true })
+      };
+
+      document.addEventListener("keydown", keyHandler);
+      if (setting === "custom_inspect_keybind") document.addEventListener("mousedown", mouseHandler, true);
     })
   })
 }
 
 const handleMenuWeaponInputChange = (input) => {
   const active = document.querySelector(".weapon.active").dataset.weapon;
-  const setting = `${active}-${input.dataset.weaponSetting}`;
+  const setting = `${active}_${input.dataset.weaponSetting}`;
   const type = input.type;
 
   const value = type === "checkbox" ? input.checked
@@ -286,14 +301,16 @@ const handleMenuWeaponInputChange = (input) => {
 
   settings[setting] = value;
 
-  const update = () => {
-    const min = +input.min || 0;
-    const max = +input.max || 100;
-    const val = +input.value;
-    const pct = ((val - min) / (max - min)) * 100;
-    input.style.setProperty("--v", pct);
-  };
-  update()
+  if (type === "range") {
+    const update = () => {
+      const min = Number(input.min);
+      const max = Number(input.max);
+      const val = Number(input.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      input.style.setProperty("--v", pct);
+    };
+    update()
+  }
 
   playSound("button", "click_sounds");
   ipcRenderer.send("update-setting", setting, value);
@@ -346,6 +363,17 @@ const handleMenuInputChanges = () => {
   });
 };
 
+const handleMenuWeaponSelectChange = (select) => {
+  const active = document.querySelector(".weapon.active").dataset.weapon;
+  const setting = `${active}_${select.dataset.weaponSetting}`;
+  const value = select.value;
+  settings[setting] = value;
+
+  playSound("button", "click_sounds");
+  ipcRenderer.send("update-setting", setting, value);
+  document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting, value } }));
+}
+
 const handleMenuSelectChange = (select) => {
   const setting = select.dataset.setting;
   const value = select.value;
@@ -360,6 +388,11 @@ const handleMenuSelectChanges = () => {
   const selects = document.querySelectorAll(".menu select[data-setting]");
   selects.forEach((select) => {
     select.addEventListener("change", () => handleMenuSelectChange(select));
+  });
+
+  const weaponSelects = document.querySelectorAll(".menu select[data-weapon-setting]");
+  weaponSelects.forEach((select) => {
+    select.addEventListener("change", () => handleMenuWeaponSelectChange(select));
   });
 }
 
@@ -451,6 +484,241 @@ const handleButtons = () => {
       }
     }
   });
+
+  const resetWeaponButton = document.querySelector(".menu #reset-weapon");
+  resetWeaponButton.addEventListener("click", () => {
+    const active = document.querySelector(".menu .weapon.active");
+    const relevant_settings = [
+      "offset_x",
+      "offset_y",
+      "offset_z",
+      "rotate_x",
+      "rotate_y",
+      "rotate_z",
+      "weapon_scale",
+      "inspect_variation"
+    ]
+    relevant_settings.forEach((setting) => {
+      const key = `${active.dataset.weapon}_${setting}`
+      ipcRenderer.send("delete-setting", key);
+    })
+    const key = `${active.dataset.weapon}_inspect_duration`
+    ipcRenderer.send("update-setting", key, default_settings[key]);
+    settings = ipcRenderer.sendSync("get-settings");
+    document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: {} }));
+    handleWeaponChange(active);
+  })
+
+  const moreOptions = document.querySelector(".menu #more-options");
+  moreOptions.addEventListener("click", (e) => {
+    e.stopPropagation();
+    [...moreOptions.nextElementSibling.children].reverse().forEach((c, i) => {
+      setTimeout(() => c.classList.toggle("active"), i * 60)
+    });
+
+    document.addEventListener("click", (e) => {
+      [...moreOptions.nextElementSibling.children].reverse().forEach((c, i) => {
+        setTimeout(() => c.classList.remove("active"), i * 20)
+      });
+    }, { once: true })
+    playSound("button", "click_sounds");
+  })
+
+  const exportSettings = document.querySelector(".menu #export-settings");
+  exportSettings.addEventListener("click", () => {
+    createModal((modal) => {
+      modal.style.width = "600px"
+      modal.innerHTML = `
+        <div class="wrapper spaced header">
+          <span>Export Settings</span>
+          <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="close-modal">
+            <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="wrapper">
+          <textarea readonly></textarea>
+        </div>
+        <div class="wrapper spaced footer">
+          <span></span>
+          <div class="wrapper" id="btns">
+            <div class="wrapper button" id="close-modal">
+              Cancel
+            </div>
+            <div class="wrapper button filled" id="copy-settings">
+              Copy
+            </div>
+          </div>
+        </div>
+      `
+
+      modal.querySelector("textarea").value = JSON.stringify(settings, null, 1);
+
+      const copy = modal.querySelector("#copy-settings");
+      copy.addEventListener("click", () => {
+        copy.textContent = "Copied!"
+        copy.style.pointerEvents = "none";
+        clipboard.writeText(JSON.stringify(settings))
+        setTimeout(() => {
+          copy.textContent = "Copy";
+          copy.style.pointerEvents = "auto";
+        }, 1500)
+        playSound("button", "click_sounds");
+      })
+
+      playSound("button", "click_sounds");
+    });
+  });
+
+  const importSettings = document.querySelector(".menu #import-settings");
+  importSettings.addEventListener("click", () => {
+    createModal((modal) => {
+      modal.style.width = "600px"
+      modal.innerHTML = `
+        <div class="wrapper spaced header">
+          <span>Import Settings</span>
+          <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="close-modal">
+            <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="wrapper">
+          <textarea placeholder="Paste settings here"></textarea>
+        </div>
+        <div class="wrapper spaced footer">
+          <span></span>
+          <div class="wrapper" id="btns">
+            <div class="wrapper button" id="close-modal">
+              Cancel
+            </div>
+            <div class="wrapper button filled" id="import-settings">
+              Import
+            </div>
+          </div>
+        </div>
+      `
+
+      const importSettings = modal.querySelector("#import-settings");
+      importSettings.addEventListener("click", () => {
+        if (!modal.querySelector("textarea").value) return;
+
+        try {
+          const newSettings = JSON.parse(modal.querySelector("textarea").value);
+
+          for (const key in newSettings) {
+            settings[key] = newSettings[key];
+            const value = newSettings[key];
+            ipcRenderer.send("update-setting", key, value)
+            document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting: key, value: value } }));
+
+            const inputs = document.querySelectorAll(`.menu input[data-setting=${key}], .menu input[data-weapon-setting=${key}]`);
+            inputs.forEach((input) => {
+              const type = input.type;
+
+              if (type === "checkbox") input.checked = value;
+              else input.value = value;
+
+              const update = () => {
+                const min = Number(input.min);
+                const max = Number(input.max);
+                const val = Number(input.value);
+                const pct = ((val - min) / (max - min)) * 100;
+                input.style.setProperty("--v", pct);
+              };
+
+              if (type === "range") update();
+            })
+
+            const keybind = document.querySelector(`.keybind[data-setting=${key}]`);
+            if (keybind) keybind.textContent = value;
+
+            const select = document.querySelector(`select[data-setting=${key}]`);
+            if (select) select.value = value;
+          }
+        } catch (error) {
+          alert(error);
+        }
+
+        importSettings.textContent = "Imported!"
+        importSettings.style.pointerEvents = "none";
+        setTimeout(() => {
+          importSettings.textContent = "Import";
+          importSettings.style.pointerEvents = "auto";
+        }, 1500)
+        playSound("button", "click_sounds");
+      })
+
+      playSound("button", "click_sounds");
+    });
+  });
+
+  const resetSettings = document.querySelector(".menu #reset-settings");
+  resetSettings.addEventListener("click", () => {
+    createModal((modal) => {
+      modal.style.width = "600px"
+      modal.innerHTML = `
+        <div class="wrapper spaced header">
+          <span>Reset Settings</span>
+          <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="close-modal">
+            <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="wrapper spaced footer">
+          <span>This action cannot be undone</span>
+          <div class="wrapper" id="btns">
+            <div class="wrapper button" id="close-modal">
+              Cancel
+            </div>
+            <div class="wrapper button filled confirm" id="reset-settings">
+              Reset
+            </div>
+          </div>
+        </div>
+      `
+
+      const reset = modal.querySelector("#reset-settings");
+      handleConfirmation(reset);
+      reset.addEventListener("click", () => {
+        settings = ipcRenderer.sendSync("reset-settings");
+        for (const key in settings) {
+          const value = settings[key];
+          document.dispatchEvent(new CustomEvent("helium-settings-changed", { detail: { setting: key, value: value } }));
+
+          const inputs = document.querySelectorAll(`.menu input[data-setting=${key}], .menu input[data-weapon-setting=${key}]`);
+          inputs.forEach((input) => {
+            const type = input.type;
+
+            if (type === "checkbox") input.checked = value;
+            else input.value = value;
+
+            const update = () => {
+              const min = Number(input.min);
+              const max = Number(input.max);
+              const val = Number(input.value);
+              const pct = ((val - min) / (max - min)) * 100;
+              input.style.setProperty("--v", pct);
+            };
+
+            if (type === "range") update();
+          })
+
+          const keybind = document.querySelector(`.keybind[data-setting=${key}]`);
+          if (keybind) keybind.textContent = value;
+
+          const select = document.querySelector(`select[data-setting=${key}]`);
+          if (select) select.value = value;
+        }
+
+        reset.textContent = "Done!"
+        reset.style.pointerEvents = "none";
+        setTimeout(() => {
+          reset.textContent = "Reset";
+          reset.style.pointerEvents = "auto";
+        }, 1500)
+        playSound("button", "click_sounds");
+      });
+
+      playSound("button", "click_sounds");
+    });
+  });
 }
 
 const handleConfirmations = () => document.querySelectorAll(".helium-menu .confirm").forEach((btn) => {
@@ -509,21 +777,21 @@ const handleDropdowns = () => {
 
     const apply = (open, instant) => {
       d.classList.toggle("active", open);
-      d._open = open;
+      d.open = open;
 
       [...d.children].forEach((c, i) => {
         const delay = Math.max(0, (i - 1) * 40);
 
         if (instant) {
           if (c === top) return;
-          c.classList.remove("gone", "open");
+          c.classList.remove("open");
           c.style.display = open ? "flex" : "none";
           return;
         }
 
         if (open) {
           setTimeout(() => {
-            if (d._open !== open) return;
+            if (d.open !== open) return;
             c.classList.remove("gone");
             if (c !== top) c.style.display = "flex";
             c.classList.add("open");
@@ -532,10 +800,10 @@ const handleDropdowns = () => {
         } else {
           if (c === top) return;
           setTimeout(() => {
-            if (d._open !== open) return;
+            if (d.open !== open) return;
             c.classList.add("open");
             setTimeout(() => {
-              if (d._open !== open) return;
+              if (d.open !== open) return;
               c.style.display = "none";
               c.classList.remove("open");
             }, 200);
@@ -644,6 +912,10 @@ handleTabChange = (tab, hideFade) => {
 
   switch (tabName) {
     case "weapons":
+      if (document.querySelector(".desktop-game-interface .weapon-name")) {
+        handleWeaponChange(document.querySelector(`.menu .weapon#${document.querySelector(".bottom.is-selected").previousElementSibling.textContent}`));
+        break;
+      }
       setTimeout(() => {
         localStorage.getItem("helium-active-weapon") ? handleWeaponChange(document.querySelector(`[data-weapon="${localStorage.getItem("helium-active-weapon")}"]`), true)
           : handleWeaponChange(document.querySelector(".menu .weapon"));
@@ -670,18 +942,29 @@ handleWeaponChange = (tab) => {
   const title = document.querySelector(".menu .title");
   title.innerHTML = `Weapon Mods <span style="color:gray; font-size:0.8em;">> ${tab.id}</span>`
 
-  const weaponName = document.querySelector(".weapon-name");
+  const weaponName = document.querySelector(".menu .weapon-name");
   weaponName.textContent = tab.id;
+
+  const variations = document.querySelector("#inspect_variation");
+  variations.innerHTML = "";
+  Object.keys(inspectData[tabName]).forEach((key) => {
+    const option = document.createElement("option");
+    option.textContent = key;
+    option.value = key;
+    variations.append(option);
+  });
+  variations.value = settings[`${tabName}_inspect_variation`] ?? settings.inspect_variation;
 
   document.querySelectorAll("input[data-weapon-setting]").forEach((input) => {
     const setting = input.dataset.weaponSetting;
-    input.value = settings[`${tabName}-${setting}`] ?? settings[setting];
+    input.value = settings[`${tabName}_${setting}`] ?? settings[setting];
     input.dispatchEvent(new Event("update"));
 
+    if (!input.type === "range") return;
     const update = () => {
-      const min = +input.min || 0;
-      const max = +input.max || 100;
-      const val = +input.value;
+      const min = Number(input.min);
+      const max = Number(input.max);
+      const val = Number(input.value);
       const pct = ((val - min) / (max - min)) * 100;
       input.style.setProperty("--v", pct);
     };
@@ -705,7 +988,7 @@ const updateDependent = (option) => {
   if (settings[dependency] !== expected || (ddd && !settings[ddd])) option.classList.add("disabled");
 }
 
-const updateDependents = () => document.querySelectorAll(".menu .option[data-requires]").forEach((dependent) => {
+const updateDependents = () => document.querySelectorAll(".menu [data-requires]").forEach((dependent) => {
   updateDependent(dependent);
 });
 
@@ -994,18 +1277,17 @@ const setupMenu = () => {
       input.value = value;
     }
 
-    if (type === "range") {
-      const update = () => {
-        const min = +input.min || 0;
-        const max = +input.max || 100;
-        const val = +input.value;
-        const pct = ((val - min) / (max - min)) * 100;
-        input.style.setProperty("--v", pct);
-      };
+    if (!type === "range") return;
+    const update = () => {
+      const min = Number(input.min);
+      const max = Number(input.max);
+      const val = Number(input.value);
+      const pct = ((val - min) / (max - min)) * 100;
+      input.style.setProperty("--v", pct);
+    };
 
-      input.addEventListener("input", update);
-      update();
-    }
+    input.addEventListener("input", update);
+    update();
   });
 
   selects.forEach((select) => {
@@ -1063,7 +1345,6 @@ const initMenu = (updateAvailable, info) => {
 
       case "menu_keybind":
         const reminder = document.querySelector("#helium-keybind-reminder");
-        console.log(reminder)
         if (reminder) reminder.textContent = `Press ${settings.menu_keybind} to open the client menu.`
         break;
     }
